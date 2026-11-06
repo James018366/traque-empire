@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Registre des Traques</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0b0d;
+    --panel: #121418;
+    --panel-2: #1a1d23;
+    --line: #2a2e36;
+    --text: #e6e8eb;
+    --muted: #8b919c;
+    --red: #c8102e;
+    --red-dim: #5a0a16;
+    --gold: #d4a63a;
+    --ok: #3fa66b;
+    --warn: #e08a1e;
+    --blue: #3a7bd5;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    background-image:
+      linear-gradient(rgba(200,16,46,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(200,16,46,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    color: var(--text);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 16px;
+    min-height: 100vh;
+  }
+  h1, h2, h3, .orb { font-family: 'Orbitron', sans-serif; letter-spacing: 0.08em; text-transform: uppercase; }
+  button, input, select, textarea { font-family: inherit; font-size: 15px; }
+  .hidden { display: none !important; }
+
+  /* ---------- LOGIN ---------- */
+  #login {
+    min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 16px;
+  }
+  .login-box {
+    width: 100%; max-width: 420px; background: var(--panel); border: 1px solid var(--line);
+    border-top: 3px solid var(--red); padding: 32px 28px; position: relative;
+  }
+  .emblem {
+    width: 72px; height: 72px; margin: 0 auto 18px; border: 2px solid var(--red);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  }
+  .emblem::before {
+    content: ''; width: 36px; height: 36px; border: 2px solid var(--red); transform: rotate(45deg);
+  }
+  .login-box h1 { text-align: center; font-size: 20px; margin-bottom: 4px; }
+  .login-box .sub { text-align: center; color: var(--muted); margin-bottom: 26px; letter-spacing: 0.2em; font-size: 12px; text-transform: uppercase; }
+  .roles { display: grid; grid-template-columns: 1fr; gap: 8px; margin-bottom: 18px; }
+  .role-opt {
+    display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 1px solid var(--line);
+    background: var(--panel-2); cursor: pointer; transition: border-color .15s;
+  }
+  .role-opt:hover { border-color: var(--muted); }
+  .role-opt.active { border-color: var(--red); background: rgba(200,16,46,0.08); }
+  .role-opt input { display: none; }
+  .role-opt .r-name { font-weight: 700; font-size: 17px; }
+  .role-opt .r-desc { color: var(--muted); font-size: 13px; }
+  .role-ico { width: 34px; height: 34px; flex-shrink: 0; display:flex; align-items:center; justify-content:center; border:1px solid var(--line); font-family:'Orbitron'; font-size: 13px; color: var(--red); }
+
+  label.f { display: block; font-size: 12px; text-transform: uppercase; letter-spacing: 0.15em; color: var(--muted); margin-bottom: 6px; font-weight: 600; }
+  .field { margin-bottom: 14px; }
+  input[type=text], input[type=password], input[type=number], input[type=url], select, textarea {
+    width: 100%; background: var(--bg); border: 1px solid var(--line); color: var(--text);
+    padding: 10px 12px; outline: none;
+  }
+  input:focus, select:focus, textarea:focus { border-color: var(--red); }
+  textarea { resize: vertical; min-height: 80px; }
+
+  .btn {
+    background: var(--panel-2); color: var(--text); border: 1px solid var(--line); padding: 10px 16px;
+    cursor: pointer; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; font-size: 13px;
+    transition: all .15s;
+  }
+  .btn:hover { border-color: var(--muted); }
+  .btn.primary { background: var(--red); border-color: var(--red); color: #fff; }
+  .btn.primary:hover { background: #a50d26; }
+  .btn.ghost { background: transparent; }
+  .btn.danger { color: #ff6b7f; border-color: var(--red-dim); }
+  .btn.danger:hover { background: var(--red-dim); }
+  .btn.small { padding: 6px 10px; font-size: 12px; }
+  .btn.block { width: 100%; }
+  .err { color: #ff6b7f; font-size: 14px; margin-top: 10px; min-height: 18px; text-align: center; }
+
+  /* ---------- APP ---------- */
+  header {
+    background: var(--panel); border-bottom: 1px solid var(--line); padding: 14px 24px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+    position: sticky; top: 0; z-index: 10;
+  }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .brand .emblem { width: 38px; height: 38px; margin: 0; }
+  .brand .emblem::before { width: 18px; height: 18px; }
+  .brand h1 { font-size: 16px; }
+  .brand small { display:block; color: var(--muted); font-size: 11px; letter-spacing: .2em; text-transform: uppercase; }
+  .who { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .badge {
+    display: inline-block; padding: 3px 9px; font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; border: 1px solid currentColor;
+  }
+  .b-referent { color: var(--gold); }
+  .b-assassin { color: var(--red); }
+  .b-maraudeur { color: var(--blue); }
+
+  main { max-width: 1280px; margin: 0 auto; padding: 24px 16px 60px; }
+
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 22px; }
+  .stat { background: var(--panel); border: 1px solid var(--line); padding: 14px 16px; border-left: 3px solid var(--line); }
+  .stat .n { font-family: 'Orbitron'; font-size: 26px; font-weight: 700; }
+  .stat .l { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .15em; }
+  .stat.s-active { border-left-color: var(--red); }
+  .stat.s-cours { border-left-color: var(--warn); }
+  .stat.s-done { border-left-color: var(--ok); }
+  .stat.s-crit { border-left-color: #ff2a4d; }
+
+  .toolbar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 18px; align-items: center; }
+  .toolbar input, .toolbar select { width: auto; flex: 1 1 160px; }
+  .toolbar .spacer { flex: 1 1 0; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; }
+  .card {
+    background: var(--panel); border: 1px solid var(--line); display: flex; flex-direction: column;
+    position: relative; overflow: hidden; cursor: pointer; transition: border-color .15s, transform .15s;
+  }
+  .card:hover { border-color: var(--muted); transform: translateY(-2px); }
+  .card .danger-bar { height: 3px; }
+  .card-top { display: flex; gap: 14px; padding: 16px; }
+  .portrait {
+    width: 74px; height: 90px; flex-shrink: 0; background: var(--bg); border: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
+    font-family: 'Orbitron'; font-size: 22px; color: var(--muted);
+  }
+  .portrait img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(0.4) contrast(1.1); }
+  .card h3 { font-size: 15px; line-height: 1.3; margin-bottom: 4px; word-break: break-word; }
+  .card .race { color: var(--muted); font-size: 14px; margin-bottom: 8px; }
+  .card .motif { font-size: 14px; color: #c3c7ce; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .card-foot {
+    margin-top: auto; border-top: 1px solid var(--line); padding: 10px 16px; display: flex;
+    justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 13px;
+  }
+  .prime { font-family: 'Orbitron'; color: var(--gold); font-size: 14px; }
+  .status { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; padding: 3px 8px; }
+  .st-active { background: rgba(200,16,46,.15); color: #ff5a72; }
+  .st-cours { background: rgba(224,138,30,.15); color: var(--warn); }
+  .st-eliminee, .st-capturee { background: rgba(63,166,107,.15); color: #5fd38f; }
+  .st-annulee { background: rgba(139,145,156,.15); color: var(--muted); }
+  .dlvl { display: inline-flex; gap: 3px; }
+  .dlvl i { width: 10px; height: 10px; border: 1px solid var(--line); display: inline-block; }
+  .stamp {
+    position: absolute; top: 18px; right: -34px; transform: rotate(35deg); background: var(--ok); color: #fff;
+    font-family: 'Orbitron'; font-size: 10px; padding: 3px 40px; letter-spacing: .15em;
+  }
+  .empty { text-align: center; color: var(--muted); padding: 60px 20px; border: 1px dashed var(--line); }
+
+  /* ---------- MODAL ---------- */
+  .modal-bg {
+    position: fixed; inset: 0; background: rgba(0,0,0,.75); display: flex; align-items: flex-start;
+    justify-content: center; padding: 30px 16px; overflow-y: auto; z-index: 50;
+  }
+  .modal { background: var(--panel); border: 1px solid var(--line); border-top: 3px solid var(--red); width: 100%; max-width: 760px; }
+  .modal-head { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid var(--line); }
+  .modal-head h2 { font-size: 15px; }
+  .modal-body { padding: 20px; }
+  .modal-foot { display: flex; justify-content: flex-end; gap: 10px; padding: 14px 20px; border-top: 1px solid var(--line); flex-wrap: wrap; }
+  .x { background: none; border: none; color: var(--muted); font-size: 24px; cursor: pointer; line-height: 1; }
+  .x:hover { color: var(--text); }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }
+  .form-grid .full { grid-column: 1 / -1; }
+  .section-title { font-family: 'Orbitron'; font-size: 11px; color: var(--red); letter-spacing: .2em; margin: 8px 0 12px; grid-column: 1/-1; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+  .danger-pick { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+  .danger-pick label {
+    border: 1px solid var(--line); padding: 8px 4px; text-align: center; cursor: pointer; font-size: 12px;
+    font-weight: 700; text-transform: uppercase; letter-spacing: .05em; background: var(--bg);
+  }
+  .danger-pick input { display: none; }
+
+  /* detail */
+  .dossier { display: grid; grid-template-columns: 150px 1fr; gap: 20px; }
+  .dossier .portrait { width: 150px; height: 190px; font-size: 40px; }
+  .kv { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 20px; }
+  .kv div span { display: block; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .15em; }
+  .kv div b { font-weight: 600; font-size: 16px; }
+  .block { margin-top: 18px; }
+  .block h4 { font-family: 'Orbitron'; font-size: 11px; color: var(--red); letter-spacing: .2em; margin-bottom: 6px; }
+  .block p { white-space: pre-wrap; color: #c9cdd3; line-height: 1.5; }
+  .reports { display: flex; flex-direction: column; gap: 8px; }
+  .report { background: var(--bg); border-left: 2px solid var(--blue); padding: 8px 12px; font-size: 14px; }
+  .report small { color: var(--muted); display: block; margin-bottom: 2px; }
+  .report-form { display: flex; gap: 8px; margin-top: 10px; }
+  .report-form input { flex: 1; }
+
+  .net { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); text-align: center; margin-top: 12px; }
+  .net::before { content: ''; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--muted); margin-right: 7px; vertical-align: middle; }
+  .net.ok { color: #5fd38f; } .net.ok::before { background: #3fa66b; box-shadow: 0 0 6px #3fa66b; }
+  .net.bad { color: #ff6b7f; } .net.bad::before { background: var(--red); }
+  header .net { margin-top: 0; }
+  .toast {
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--panel-2);
+    border: 1px solid var(--line); border-left: 3px solid var(--red); padding: 10px 18px; z-index: 100;
+    font-weight: 600;
+  }
+
+  @media (max-width: 640px) {
+    header { padding: 12px 16px; }
+    .form-grid { grid-template-columns: 1fr; }
+    .dossier { grid-template-columns: 1fr; }
+    .dossier .portrait { margin: 0 auto; }
+    .kv { grid-template-columns: 1fr; }
+    .danger-pick { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= CONNEXION ================= -->
+<section id="login">
+  <div class="login-box">
+    <div class="emblem"></div>
+    <h1>Registre des Traques</h1>
+    <div class="sub">Accès restreint — Personnel autorisé</div>
+
+    <form id="loginForm" autocomplete="off">
+      <div class="field">
+        <label class="f" for="pseudo">Matricule / Nom de code</label>
+        <input type="text" id="pseudo" required maxlength="40" placeholder="ex : TK-4471">
+      </div>
+      <div class="field">
+        <label class="f" for="code">Code d'accès</label>
+        <input type="password" id="code" required placeholder="••••••••">
+      </div>
+      <button class="btn primary block" type="submit">Accéder au registre</button>
+      <div class="err" id="loginErr"></div>
+      <div class="net" id="netStatus"></div>
+    </form>
+  </div>
+</section>
+
+<!-- ================= APPLICATION ================= -->
+<section id="app" class="hidden">
+  <header>
+    <div class="brand">
+      <div class="emblem"></div>
+      <div><h1>Registre des Traques</h1><small>Bureau de la Sécurité Impériale</small></div>
+    </div>
+    <div class="who">
+      <span class="net" id="netBadge"></span>
+      <span id="whoName" style="font-weight:700"></span>
+      <span id="whoRole" class="badge"></span>
+      <button class="btn small" id="accessBtn">Gestion des accès</button>
+      <button class="btn small ghost" id="logoutBtn">Déconnexion</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="stats" id="stats"></div>
+
+    <div class="toolbar">
+      <input type="text" id="search" placeholder="Rechercher un nom, une race, un motif…">
+      <select id="fStatus">
+        <option value="">Tous les statuts</option>
+      </select>
+      <select id="fDanger">
+        <option value="">Toute dangerosité</option>
+      </select>
+      <select id="fSort">
+        <option value="recent">Plus récentes</option>
+        <option value="danger">Plus dangereuses</option>
+        <option value="prime">Prime la plus haute</option>
+        <option value="nom">Nom (A→Z)</option>
+      </select>
+      <button class="btn primary" id="newBtn">+ Nouvelle traque</button>
+    </div>
+
+    <div class="grid" id="grid"></div>
+
+    <div class="toolbar" id="adminTools" style="margin-top:28px">
+      <span style="color:var(--muted);font-size:13px">Sauvegarde des données :</span>
+      <button class="btn small" id="exportBtn">Exporter (.json)</button>
+      <label class="btn small" style="display:inline-block">Importer (.json)
+        <input type="file" id="importFile" accept=".json,application/json" hidden>
+      </label>
+    </div>
+  </main>
+</section>
+
+<div id="modalRoot"></div>
+
+<script>
+/* =====================================================================
+   FIREBASE — COLLE ICI LA CONFIGURATION DE TON PROJET
+   (Console Firebase → Paramètres du projet → Tes applications → Config)
+   Tant que c'est vide, le site fonctionne en « mode local »
+   (données dans le navigateur uniquement).
+   ===================================================================== */
+const FIREBASE_CONFIG = {
+  apiKey: "",
+  authDomain: "",
+  projectId: "",
+  storageBucket: "",
+  messagingSenderId: "",
+  appId: ""
+};
+const CLOUD = !!(FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.projectId);
+const FIREBASE_VERSION = "10.12.2";
+
+/* =====================================================================
+   CONFIGURATION
+   Compte Référent principal (permanent, ne peut pas être supprimé).
+   Les autres accès se créent depuis le panel « Gestion des accès ».
+   ===================================================================== */
+const CONFIG = {
+  root: { pseudo: "VL-3009", code: "Vhaelor", role: "referent" },
+  roles: {
+    referent:  { label: "Référent Traque", desc: "Crée, modifie et supprime les traques, gère les accès" },
+    assassin:  { label: "Assassin",        desc: "Prend en charge et clôture les traques" },
+    maraudeur: { label: "Maraudeur",       desc: "Consulte et transmet des signalements" }
+  }
+};
+
+/* Permissions par rôle */
+const PERMS = {
+  referent:  { create: true,  edit: true,  delete: true,  claim: true,  close: true,  report: true,  backup: true },
+  assassin:  { create: false, edit: false, delete: false, claim: true,  close: true,  report: true,  backup: false },
+  maraudeur: { create: false, edit: false, delete: false, claim: false, close: false, report: true,  backup: false }
+};
+
+const DANGER = [
+  { v: 1, label: "Faible",   color: "#3fa66b" },
+  { v: 2, label: "Modéré",   color: "#c9b52a" },
+  { v: 3, label: "Élevé",    color: "#e08a1e" },
+  { v: 4, label: "Extrême",  color: "#e0461e" },
+  { v: 5, label: "Critique", color: "#ff2a4d" }
+];
+const STATUS = {
+  active:   "Active",
+  cours:    "En cours",
+  capturee: "Capturée",
+  eliminee: "Éliminée",
+  annulee:  "Annulée"
+};
+const MODES = { vivant: "Vivant uniquement", mort: "Mort", indifferent: "Mort ou vif" };
+
+const STORE_KEY = "registre_traques_v1";
+const ACCESS_KEY = "registre_acces_v1";
+const SESSION_KEY = "registre_traques_session";
+
+/* ---------------- Stockage (Firebase ou local) ---------------- */
+function load(key) {
+  if (CLOUD) return [];
+  try { return JSON.parse(localStorage.getItem(key)) || []; } catch (e) { return []; }
+}
+function saveLocal() {
+  try {
+    localStorage.setItem(STORE_KEY, JSON.stringify(traques));
+    localStorage.setItem(ACCESS_KEY, JSON.stringify(acces));
+  } catch (e) { toast("Sauvegarde impossible dans ce navigateur"); }
+}
+let traques = load(STORE_KEY);
+let acces = load(ACCESS_KEY);
+
+let fb = null;               // { db, setDoc, doc, deleteDoc, ... } une fois connecté
+let ready = !CLOUD;          // données chargées ?
+let gotT = false, gotA = false;
+let currentView = null;      // modale ouverte : {type:'detail',id} | {type:'access'} | {type:'form'}
+
+const clean = o => JSON.parse(JSON.stringify(o));
+
+async function writeDoc(col, obj) {
+  if (!CLOUD) {
+    const arr = col === "traques" ? traques : acces;
+    if (!arr.includes(obj)) arr.push(obj);
+    saveLocal(); return true;
+  }
+  if (!fb) { toast("Base non connectée"); return false; }
+  try { await fb.setDoc(fb.doc(fb.db, col, obj.id), clean(obj)); return true; }
+  catch (e) { netError(e); toast("Échec de l'enregistrement"); return false; }
+}
+async function removeDoc(col, id) {
+  if (!CLOUD) {
+    if (col === "traques") traques = traques.filter(x => x.id !== id);
+    else acces = acces.filter(x => x.id !== id);
+    saveLocal(); return true;
+  }
+  if (!fb) { toast("Base non connectée"); return false; }
+  try { await fb.deleteDoc(fb.doc(fb.db, col, id)); return true; }
+  catch (e) { netError(e); toast("Échec de la suppression"); return false; }
+}
+const putTraque = t => writeDoc("traques", t);
+const delTraque = id => removeDoc("traques", id);
+const putAcces  = a => writeDoc("acces", a);
+const delAcces  = id => removeDoc("acces", id);
+
+function setNet(msg, state) {
+  ["#netStatus", "#netBadge"].forEach(s => {
+    const el = document.querySelector(s); if (!el) return;
+    el.textContent = msg;
+    el.className = "net" + (state === "ok" ? " ok" : state === "bad" ? " bad" : "");
+  });
+}
+function netError(e) {
+  console.error(e);
+  const code = e && (e.code || e.message) || "inconnue";
+  let msg = "Erreur base de données : " + code;
+  if (String(code).includes("permission")) msg = "Accès refusé par Firebase (vérifie les règles Firestore)";
+  if (String(code).includes("operation-not-allowed") || String(code).includes("admin-restricted")) msg = "Active la connexion « Anonyme » dans Firebase Authentication";
+  setNet(msg, "bad");
+}
+
+async function initCloud() {
+  setNet("Connexion au registre…");
+  try {
+    const base = `https://www.gstatic.com/firebasejs/${FIREBASE_VERSION}/`;
+    const [appM, fsM, authM] = await Promise.all([
+      import(base + "firebase-app.js"),
+      import(base + "firebase-firestore.js"),
+      import(base + "firebase-auth.js")
+    ]);
+    const app = appM.initializeApp(FIREBASE_CONFIG);
+    await authM.signInAnonymously(authM.getAuth(app));
+    const db = fsM.getFirestore(app);
+    fb = { db, ...fsM };
+    fsM.onSnapshot(fsM.collection(db, "traques"),
+      snap => { traques = snap.docs.map(d => d.data()); gotT = true; onData(); }, netError);
+    fsM.onSnapshot(fsM.collection(db, "acces"),
+      snap => { acces = snap.docs.map(d => d.data()); gotA = true; onData(); }, netError);
+  } catch (e) { netError(e); }
+}
+
+/* Appelé à chaque changement venant de la base (temps réel) */
+function onData() {
+  if (!ready && gotT && gotA) {
+    ready = true;
+    setNet("Registre synchronisé", "ok");
+    restoreSession();
+    return;
+  }
+  if (!ready || !session) return;
+  // Le compte connecté a-t-il été révoqué ou suspendu entre-temps ?
+  const acc = findAccount(session.pseudo);
+  if (!acc || !acc.actif) { logout(); $("#loginErr").textContent = "Ton accès a été révoqué ou suspendu."; return; }
+  if (acc.role !== session.role) { session.role = acc.role; showApp(); }
+  render();
+  refreshOpenModal();
+}
+function refreshOpenModal() {
+  if (!currentView || currentView.type === "form") return;
+  const a = document.activeElement;
+  if (a && $("#modalRoot").contains(a) && ["INPUT", "TEXTAREA", "SELECT"].includes(a.tagName) && a.value) return;
+  if (currentView.type === "detail") {
+    if (traques.some(t => t.id === currentView.id)) openDetail(currentView.id); else closeModal();
+  } else if (currentView.type === "access") openAccess();
+}
+
+/* Retrouve un compte (principal ou créé) par matricule */
+function findAccount(pseudo) {
+  const p = pseudo.trim().toLowerCase();
+  if (p === CONFIG.root.pseudo.toLowerCase()) return { ...CONFIG.root, root: true, actif: true };
+  return acces.find(a => a.pseudo.toLowerCase() === p);
+}
+let session = null;
+try { session = JSON.parse(sessionStorage.getItem(SESSION_KEY)); } catch (e) {}
+
+/* ---------------- Utilitaires ---------------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+const fmtDate = t => new Date(t).toLocaleString("fr-FR", { day:"2-digit", month:"2-digit", year:"numeric", hour:"2-digit", minute:"2-digit" });
+const fmtPrime = n => n ? Number(n).toLocaleString("fr-FR") + " cr." : "—";
+const can = p => session && PERMS[session.role][p];
+function toast(msg) {
+  const t = document.createElement("div"); t.className = "toast"; t.textContent = msg;
+  document.body.appendChild(t); setTimeout(() => t.remove(), 2600);
+}
+function dangerBars(v) {
+  const d = DANGER[v - 1] || DANGER[0];
+  return `<span class="dlvl" title="${d.label}">${DANGER.map((_, i) =>
+    `<i style="${i < v ? `background:${d.color};border-color:${d.color}` : ""}"></i>`).join("")}</span>`;
+}
+function initials(t) { return ((t.prenom || "")[0] || "") + ((t.nom || "")[0] || "") || "?"; }
+function portrait(t) {
+  return t.photo ? `<img src="${esc(t.photo)}" alt="" onerror="this.replaceWith(document.createTextNode('${esc(initials(t)).toUpperCase()}'))">`
+                 : esc(initials(t)).toUpperCase();
+}
+
+/* ---------------- Connexion ---------------- */
+$("#loginForm").onsubmit = e => {
+  e.preventDefault();
+  const pseudo = $("#pseudo").value.trim();
+  const code = $("#code").value;
+  if (!pseudo) return;
+  if (!ready) {
+    $("#loginErr").textContent = "Registre en cours de chargement, réessaie dans un instant.";
+    return;
+  }
+  const acc = findAccount(pseudo);
+  if (!acc || acc.code !== code) {
+    $("#loginErr").textContent = "Matricule ou code d'accès refusé.";
+    $("#code").value = "";
+    return;
+  }
+  if (!acc.actif) {
+    $("#loginErr").textContent = "Cet accès a été suspendu.";
+    $("#code").value = "";
+    return;
+  }
+  session = { role: acc.role, pseudo: acc.pseudo };
+  try { sessionStorage.setItem(SESSION_KEY, JSON.stringify(session)); } catch (e) {}
+  $("#loginErr").textContent = ""; $("#code").value = "";
+  showApp();
+};
+function logout() {
+  session = null;
+  try { sessionStorage.removeItem(SESSION_KEY); } catch (e) {}
+  closeModal();
+  $("#app").classList.add("hidden"); $("#login").classList.remove("hidden");
+}
+$("#logoutBtn").onclick = logout;
+
+function restoreSession() {
+  let s = null;
+  try { s = JSON.parse(sessionStorage.getItem(SESSION_KEY)); } catch (e) {}
+  if (!s) return;
+  const acc = findAccount(s.pseudo || "");
+  if (acc && acc.actif) { session = { pseudo: acc.pseudo, role: acc.role }; showApp(); }
+  else { try { sessionStorage.removeItem(SESSION_KEY); } catch (e) {} }
+}
+
+function showApp() {
+  $("#login").classList.add("hidden"); $("#app").classList.remove("hidden");
+  $("#whoName").textContent = session.pseudo;
+  const r = $("#whoRole");
+  r.textContent = CONFIG.roles[session.role].label;
+  r.className = "badge b-" + session.role;
+  $("#newBtn").classList.toggle("hidden", !can("create"));
+  $("#adminTools").classList.toggle("hidden", !can("backup"));
+  $("#accessBtn").classList.toggle("hidden", session.role !== "referent");
+  render();
+}
+
+/* ---------------- Panel de gestion des accès (Référent) ---------------- */
+function genCode() {
+  const c = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  let s = ""; for (let i = 0; i < 8; i++) s += c[Math.floor(Math.random() * c.length)];
+  return s;
+}
+function openAccess() {
+  if (session.role !== "referent") return;
+  currentView = { type: "access" };
+  const rows = [{ ...CONFIG.root, root: true, actif: true, createdBy: "—" }, ...acces];
+  modal(`
+    <div class="modal-head"><h2>Gestion des accès</h2><button class="x" data-close>&times;</button></div>
+    <div class="modal-body">
+      <form id="accForm" class="form-grid" autocomplete="off">
+        <div class="section-title">Créer un accès</div>
+        <div class="field"><label class="f">Matricule *</label><input type="text" name="pseudo" required maxlength="40" placeholder="ex : TK-4471"></div>
+        <div class="field"><label class="f">Grade *</label>
+          <select name="role">${Object.entries(CONFIG.roles).map(([k, r]) =>
+            `<option value="${k}" ${k === "assassin" ? "selected" : ""}>${r.label}</option>`).join("")}</select>
+        </div>
+        <div class="field full"><label class="f">Code d'accès *</label>
+          <div style="display:flex;gap:8px">
+            <input type="text" name="code" required maxlength="40" value="${genCode()}">
+            <button type="button" class="btn small" id="regen">Générer</button>
+          </div>
+        </div>
+        <div class="full" style="margin-bottom:6px"><button class="btn primary" type="submit">Créer l'accès</button></div>
+        <div class="err full" id="accErr" style="text-align:left"></div>
+      </form>
+
+      <div class="section-title" style="margin-top:10px">Accès existants (${rows.length})</div>
+      <div style="overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;font-size:14px">
+        <thead><tr style="text-align:left;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.12em">
+          <th style="padding:8px 6px">Matricule</th><th style="padding:8px 6px">Grade</th><th style="padding:8px 6px">Code</th>
+          <th style="padding:8px 6px">État</th><th style="padding:8px 6px"></th></tr></thead>
+        <tbody>${rows.map(a => `
+          <tr style="border-top:1px solid var(--line)">
+            <td style="padding:8px 6px;font-weight:700">${esc(a.pseudo)}${a.root ? ` <span style="color:var(--muted);font-weight:400">(principal)</span>` : ""}</td>
+            <td style="padding:8px 6px"><span class="badge b-${a.role}">${CONFIG.roles[a.role].label}</span></td>
+            <td style="padding:8px 6px;font-family:monospace">${a.root ? "••••••" : `<span class="code-mask" data-code="${esc(a.code)}" style="cursor:pointer" title="Cliquer pour afficher">••••••</span>`}</td>
+            <td style="padding:8px 6px">${a.actif ? `<span style="color:#5fd38f">Actif</span>` : `<span style="color:var(--muted)">Suspendu</span>`}</td>
+            <td style="padding:8px 6px;text-align:right;white-space:nowrap">${a.root ? "" : `
+              <button class="btn small" data-act="toggle" data-id="${a.id}">${a.actif ? "Suspendre" : "Réactiver"}</button>
+              <button class="btn small" data-act="reset" data-id="${a.id}">Nouveau code</button>
+              <button class="btn small danger" data-act="del" data-id="${a.id}">Révoquer</button>`}
+            </td>
+          </tr>`).join("")}
+        </tbody>
+      </table>
+      </div>
+    </div>`);
+
+  $("#regen").onclick = () => { $("#accForm [name=code]").value = genCode(); };
+  document.querySelectorAll(".code-mask").forEach(el => el.onclick = () => {
+    el.textContent = el.textContent === "••••••" ? el.dataset.code : "••••••";
+  });
+
+  $("#accForm").onsubmit = async e => {
+    e.preventDefault();
+    const f = Object.fromEntries(new FormData(e.target).entries());
+    f.pseudo = f.pseudo.trim(); f.code = f.code.trim();
+    if (!f.pseudo || !f.code) return;
+    if (findAccount(f.pseudo)) { $("#accErr").textContent = "Ce matricule possède déjà un accès."; return; }
+    const ok = await putAcces({ id: uid(), pseudo: f.pseudo, code: f.code, role: f.role, actif: true, createdAt: Date.now(), createdBy: session.pseudo });
+    if (!ok) return;
+    openAccess();
+    toast(`Accès ${CONFIG.roles[f.role].label} créé pour ${f.pseudo} — code : ${f.code}`);
+  };
+
+  document.querySelectorAll("[data-act]").forEach(b => b.onclick = async () => {
+    const a = acces.find(x => x.id === b.dataset.id); if (!a) return;
+    let ok;
+    if (b.dataset.act === "toggle") {
+      a.actif = !a.actif; ok = await putAcces(a); if (ok) toast(a.actif ? "Accès réactivé" : "Accès suspendu");
+    } else if (b.dataset.act === "reset") {
+      a.code = genCode(); ok = await putAcces(a); if (ok) toast(`Nouveau code pour ${a.pseudo} : ${a.code}`);
+    } else if (b.dataset.act === "del") {
+      if (!confirm(`Révoquer définitivement l'accès de ${a.pseudo} ?`)) return;
+      ok = await delAcces(a.id); if (ok) toast("Accès révoqué");
+    }
+    openAccess();
+  });
+}
+$("#accessBtn").onclick = openAccess;
+
+/* ---------------- Liste ---------------- */
+$("#fStatus").innerHTML += Object.entries(STATUS).map(([k, v]) => `<option value="${k}">${v}</option>`).join("");
+$("#fDanger").innerHTML += DANGER.map(d => `<option value="${d.v}">${d.v} — ${d.label}</option>`).join("");
+["#search", "#fStatus", "#fDanger", "#fSort"].forEach(s => $(s).addEventListener("input", render));
+
+function render() {
+  // stats
+  const c = s => traques.filter(t => t.statut === s).length;
+  $("#stats").innerHTML = `
+    <div class="stat"><div class="n">${traques.length}</div><div class="l">Dossiers</div></div>
+    <div class="stat s-active"><div class="n">${c("active")}</div><div class="l">Actives</div></div>
+    <div class="stat s-cours"><div class="n">${c("cours")}</div><div class="l">En cours</div></div>
+    <div class="stat s-done"><div class="n">${c("eliminee") + c("capturee")}</div><div class="l">Clôturées</div></div>
+    <div class="stat s-crit"><div class="n">${traques.filter(t => t.danger >= 4 && ["active","cours"].includes(t.statut)).length}</div><div class="l">Menaces majeures</div></div>`;
+
+  const q = $("#search").value.toLowerCase().trim();
+  const fs = $("#fStatus").value, fd = $("#fDanger").value, sort = $("#fSort").value;
+  let list = traques.filter(t => {
+    if (fs && t.statut !== fs) return false;
+    if (fd && String(t.danger) !== fd) return false;
+    if (q) {
+      const hay = [t.nom, t.prenom, t.alias, t.race, t.motif, t.affiliation, t.localisation].join(" ").toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  });
+  const sorters = {
+    recent: (a, b) => b.createdAt - a.createdAt,
+    danger: (a, b) => b.danger - a.danger,
+    prime:  (a, b) => (b.prime || 0) - (a.prime || 0),
+    nom:    (a, b) => (a.nom || "").localeCompare(b.nom || "", "fr")
+  };
+  list.sort(sorters[sort]);
+
+  if (!list.length) {
+    $("#grid").innerHTML = `<div class="empty" style="grid-column:1/-1">${traques.length
+      ? "Aucun dossier ne correspond à la recherche."
+      : (can("create") ? "Aucune traque enregistrée. Créez le premier dossier avec « + Nouvelle traque »." : "Aucune traque enregistrée pour le moment.")}</div>`;
+    return;
+  }
+  $("#grid").innerHTML = list.map(t => {
+    const d = DANGER[t.danger - 1] || DANGER[0];
+    const closed = ["eliminee", "capturee"].includes(t.statut);
+    return `
+    <article class="card" data-id="${t.id}">
+      <div class="danger-bar" style="background:${d.color}"></div>
+      ${closed ? `<div class="stamp">${STATUS[t.statut].toUpperCase()}</div>` : ""}
+      <div class="card-top">
+        <div class="portrait">${portrait(t)}</div>
+        <div style="min-width:0">
+          <h3>${esc(t.prenom)} ${esc(t.nom)}</h3>
+          <div class="race">${esc(t.race || "Race inconnue")}${t.alias ? ` · « ${esc(t.alias)} »` : ""}</div>
+          <div class="motif">${esc(t.motif)}</div>
+        </div>
+      </div>
+      <div class="card-foot">
+        <span class="status st-${t.statut}">${STATUS[t.statut]}</span>
+        ${dangerBars(t.danger)}
+        <span class="prime">${fmtPrime(t.prime)}</span>
+      </div>
+    </article>`;
+  }).join("");
+  document.querySelectorAll(".card").forEach(el => el.onclick = () => openDetail(el.dataset.id));
+}
+
+/* ---------------- Modales ---------------- */
+function modal(html) {
+  $("#modalRoot").innerHTML = `<div class="modal-bg"><div class="modal">${html}</div></div>`;
+  const bg = $("#modalRoot .modal-bg");
+  bg.addEventListener("mousedown", e => { if (e.target === bg) closeModal(); });
+  bg.querySelectorAll("[data-close]").forEach(b => b.onclick = closeModal);
+}
+function closeModal() { $("#modalRoot").innerHTML = ""; currentView = null; }
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
+
+/* --- Formulaire création / édition --- */
+function openForm(id) {
+  if (!can(id ? "edit" : "create")) return;
+  const t = id ? traques.find(x => x.id === id) : { danger: 3, statut: "active", mode: "indifferent" };
+  if (!t) return;
+  currentView = { type: "form" };
+  modal(`
+    <div class="modal-head"><h2>${id ? "Modifier le dossier" : "Nouvelle traque"}</h2><button class="x" data-close>&times;</button></div>
+    <form id="tForm">
+      <div class="modal-body form-grid">
+        <div class="section-title">Identité de la cible</div>
+        <div class="field"><label class="f">Nom *</label><input type="text" name="nom" required maxlength="60" value="${esc(t.nom)}"></div>
+        <div class="field"><label class="f">Prénom *</label><input type="text" name="prenom" required maxlength="60" value="${esc(t.prenom)}"></div>
+        <div class="field"><label class="f">Race *</label><input type="text" name="race" required maxlength="40" value="${esc(t.race)}" list="races"></div>
+        <div class="field"><label class="f">Alias / Surnom</label><input type="text" name="alias" maxlength="60" value="${esc(t.alias)}"></div>
+        <div class="field"><label class="f">Affiliation</label><input type="text" name="affiliation" maxlength="80" value="${esc(t.affiliation)}" placeholder="Rébellion, cartel, indépendant…"></div>
+        <div class="field"><label class="f">Photo (URL)</label><input type="url" name="photo" value="${esc(t.photo)}" placeholder="https://…"></div>
+        <div class="field full"><label class="f">Signalement physique</label><textarea name="description" maxlength="800" placeholder="Taille, signes distinctifs, équipement…">${esc(t.description)}</textarea></div>
+
+        <div class="section-title">Mandat</div>
+        <div class="field full"><label class="f">Motif *</label><textarea name="motif" required maxlength="1000" placeholder="Raisons de la traque">${esc(t.motif)}</textarea></div>
+        <div class="field full">
+          <label class="f">Niveau de dangerosité *</label>
+          <div class="danger-pick">${DANGER.map(d => `
+            <label data-c="${d.color}"><input type="radio" name="danger" value="${d.v}" ${t.danger == d.v ? "checked" : ""}>${d.v} · ${d.label}</label>`).join("")}
+          </div>
+        </div>
+        <div class="field"><label class="f">Prime (crédits)</label><input type="number" name="prime" min="0" step="100" value="${esc(t.prime)}"></div>
+        <div class="field"><label class="f">Condition de capture</label>
+          <select name="mode">${Object.entries(MODES).map(([k, v]) => `<option value="${k}" ${t.mode === k ? "selected" : ""}>${v}</option>`).join("")}</select>
+        </div>
+        <div class="field"><label class="f">Dernière localisation connue</label><input type="text" name="localisation" maxlength="100" value="${esc(t.localisation)}"></div>
+        <div class="field"><label class="f">Statut</label>
+          <select name="statut">${Object.entries(STATUS).map(([k, v]) => `<option value="${k}" ${t.statut === k ? "selected" : ""}>${v}</option>`).join("")}</select>
+        </div>
+        <div class="field"><label class="f">Assignée à</label><input type="text" name="assigne" maxlength="60" value="${esc(t.assigne)}" placeholder="Matricule de l'Assassin"></div>
+        <div class="field"><label class="f">Priorité</label>
+          <select name="priorite">${["Normale","Haute","Absolue"].map(p => `<option ${t.priorite === p ? "selected" : ""}>${p}</option>`).join("")}</select>
+        </div>
+        <div class="field full"><label class="f">Notes / Consignes</label><textarea name="notes" maxlength="1500">${esc(t.notes)}</textarea></div>
+        <datalist id="races">
+          ${["Humain","Twi'lek","Rodien","Wookiee","Trandoshan","Zabrak","Mon Calamari","Duros","Togruta","Weequay","Gamorréen","Bothan","Droïde"].map(r => `<option value="${r}">`).join("")}
+        </datalist>
+      </div>
+      <div class="modal-foot">
+        <button type="button" class="btn ghost" data-close>Annuler</button>
+        <button type="submit" class="btn primary">${id ? "Enregistrer" : "Émettre la traque"}</button>
+      </div>
+    </form>`);
+
+  const paint = () => document.querySelectorAll(".danger-pick label").forEach(l => {
+    const on = l.querySelector("input").checked;
+    l.style.borderColor = on ? l.dataset.c : ""; l.style.color = on ? l.dataset.c : "";
+    l.style.background = on ? l.dataset.c + "22" : "";
+  });
+  document.querySelectorAll(".danger-pick input").forEach(i => i.onchange = paint); paint();
+
+  $("#tForm").onsubmit = async e => {
+    e.preventDefault();
+    const btn = e.target.querySelector("[type=submit]"); btn.disabled = true;
+    const f = Object.fromEntries(new FormData(e.target).entries());
+    f.danger = Number(f.danger) || 3;
+    f.prime = f.prime ? Number(f.prime) : 0;
+    for (const k in f) if (typeof f[k] === "string") f[k] = f[k].trim();
+    let target;
+    if (id) {
+      target = t;
+      Object.assign(target, f, { updatedAt: Date.now(), updatedBy: session.pseudo });
+      log(target, "Dossier modifié");
+    } else {
+      target = { id: uid(), ...f, createdAt: Date.now(), createdBy: session.pseudo, reports: [], history: [] };
+      log(target, "Traque émise");
+    }
+    const ok = await putTraque(target);
+    btn.disabled = false;
+    if (!ok) return;
+    toast(id ? "Dossier mis à jour" : "Traque émise");
+    render(); closeModal();
+  };
+}
+
+function log(t, action) {
+  t.history = t.history || [];
+  t.history.push({ at: Date.now(), by: session.pseudo, role: session.role, action });
+}
+
+/* --- Fiche détaillée --- */
+function openDetail(id) {
+  const t = traques.find(x => x.id === id); if (!t) return;
+  currentView = { type: "detail", id };
+  const d = DANGER[t.danger - 1] || DANGER[0];
+  const open = ["active", "cours"].includes(t.statut);
+  const mine = t.assigne && t.assigne.toLowerCase() === session.pseudo.toLowerCase();
+
+  let actions = "";
+  if (can("claim") && t.statut === "active") actions += `<button class="btn" id="aClaim">Prendre la traque</button>`;
+  if (can("claim") && t.statut === "cours" && mine) actions += `<button class="btn ghost" id="aDrop">Abandonner</button>`;
+  if (can("close") && open && (session.role === "referent" || mine)) {
+    actions += `<button class="btn" id="aCapt">Capturée</button><button class="btn" id="aElim">Éliminée</button>`;
+  }
+  if (can("edit")) actions += `<button class="btn" id="aEdit">Modifier</button>`;
+  if (can("delete")) actions += `<button class="btn danger" id="aDel">Supprimer</button>`;
+
+  modal(`
+    <div class="modal-head">
+      <h2>Dossier n° ${esc(t.id.slice(-6).toUpperCase())}</h2>
+      <button class="x" data-close>&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="dossier">
+        <div class="portrait" style="border-color:${d.color}">${portrait(t)}</div>
+        <div>
+          <h2 style="font-size:20px;margin-bottom:4px">${esc(t.prenom)} ${esc(t.nom)}</h2>
+          <div style="color:var(--muted);margin-bottom:14px">${t.alias ? `Alias « ${esc(t.alias)} » · ` : ""}<span class="status st-${t.statut}">${STATUS[t.statut]}</span></div>
+          <div class="kv">
+            <div><span>Race</span><b>${esc(t.race || "—")}</b></div>
+            <div><span>Dangerosité</span><b style="color:${d.color}">${t.danger} — ${d.label}</b> ${dangerBars(t.danger)}</div>
+            <div><span>Prime</span><b class="prime">${fmtPrime(t.prime)}</b></div>
+            <div><span>Condition</span><b>${MODES[t.mode] || "—"}</b></div>
+            <div><span>Affiliation</span><b>${esc(t.affiliation || "—")}</b></div>
+            <div><span>Priorité</span><b>${esc(t.priorite || "Normale")}</b></div>
+            <div><span>Dernière localisation</span><b>${esc(t.localisation || "Inconnue")}</b></div>
+            <div><span>Assignée à</span><b>${esc(t.assigne || "Personne")}</b></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="block"><h4>Motif</h4><p>${esc(t.motif)}</p></div>
+      ${t.description ? `<div class="block"><h4>Signalement physique</h4><p>${esc(t.description)}</p></div>` : ""}
+      ${t.notes ? `<div class="block"><h4>Notes / Consignes</h4><p>${esc(t.notes)}</p></div>` : ""}
+
+      <div class="block">
+        <h4>Signalements terrain (${(t.reports || []).length})</h4>
+        <div class="reports">${(t.reports || []).slice().reverse().map(r => `
+          <div class="report"><small>${esc(r.by)} · ${esc(CONFIG.roles[r.role]?.label || "")} · ${fmtDate(r.at)}</small>${esc(r.text)}</div>`).join("")
+          || `<span style="color:var(--muted);font-size:14px">Aucun signalement.</span>`}
+        </div>
+        ${can("report") && open ? `
+        <form class="report-form" id="rForm">
+          <input type="text" id="rText" maxlength="300" placeholder="Ex : aperçu au spatioport de Mos Eisley, 14h…" required>
+          <button class="btn" type="submit">Transmettre</button>
+        </form>` : ""}
+      </div>
+
+      <div class="block">
+        <h4>Historique</h4>
+        <div style="font-size:13px;color:var(--muted);line-height:1.7">
+          ${(t.history || []).slice().reverse().map(h => `${fmtDate(h.at)} — ${esc(h.action)} par <b style="color:var(--text)">${esc(h.by)}</b>`).join("<br>")}
+        </div>
+      </div>
+    </div>
+    ${actions ? `<div class="modal-foot">${actions}</div>` : ""}`);
+
+  const upd = async (changes, action, msg) => {
+    Object.assign(t, changes); log(t, action);
+    const ok = await putTraque(t);
+    render(); openDetail(id);
+    if (ok) toast(msg);
+  };
+  const on = (sel, fn) => { const b = $(sel); if (b) b.onclick = fn; };
+  on("#aClaim", () => upd({ statut: "cours", assigne: session.pseudo }, "Traque prise en charge", "Traque prise en charge"));
+  on("#aDrop",  () => upd({ statut: "active", assigne: "" }, "Traque abandonnée", "Traque remise en circulation"));
+  on("#aCapt",  () => confirm("Confirmer la capture de la cible ?") && upd({ statut: "capturee", closedAt: Date.now() }, "Cible capturée", "Cible capturée"));
+  on("#aElim",  () => confirm("Confirmer l'élimination de la cible ?") && upd({ statut: "eliminee", closedAt: Date.now() }, "Cible éliminée", "Cible éliminée"));
+  on("#aEdit",  () => openForm(id));
+  on("#aDel",   async () => {
+    if (!confirm(`Supprimer définitivement le dossier de ${t.prenom} ${t.nom} ?`)) return;
+    closeModal();
+    if (await delTraque(id)) { render(); toast("Dossier supprimé"); }
+  });
+  const rf = $("#rForm");
+  if (rf) rf.onsubmit = e => {
+    e.preventDefault();
+    const text = $("#rText").value.trim(); if (!text) return;
+    t.reports = t.reports || [];
+    t.reports.push({ at: Date.now(), by: session.pseudo, role: session.role, text });
+    upd({}, "Signalement transmis", "Signalement transmis");
+  };
+}
+
+$("#newBtn").onclick = () => openForm(null);
+
+/* ---------------- Export / Import ---------------- */
+$("#exportBtn").onclick = () => {
+  const blob = new Blob([JSON.stringify({ traques, acces }, null, 2)], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `traques-${new Date().toISOString().slice(0, 10)}.json`;
+  a.click(); URL.revokeObjectURL(a.href);
+};
+$("#importFile").onchange = e => {
+  const file = e.target.files[0]; if (!file) return;
+  const r = new FileReader();
+  r.onload = async () => {
+    let data, acc;
+    try {
+      const raw = JSON.parse(r.result);
+      data = Array.isArray(raw) ? raw : raw.traques;
+      acc = Array.isArray(raw) ? null : raw.acces;
+      if (!Array.isArray(data) || data.some(t => !t || !t.id)) throw 0;
+      if (acc && (!Array.isArray(acc) || acc.some(a => !a || !a.id))) throw 0;
+    } catch (err) { toast("Fichier invalide"); e.target.value = ""; return; }
+    e.target.value = "";
+    if (!confirm(`Importer ${data.length} dossier(s)${acc ? ` et ${acc.length} accès` : ""} ? Les données actuelles seront remplacées.`)) return;
+
+    if (!CLOUD) {
+      traques = data;
+      if (acc) acces = acc;
+      saveLocal(); render(); toast("Import réussi");
+      return;
+    }
+    // Mode Firebase : on remplace le contenu des collections
+    try {
+      const ops = [];
+      const ids = new Set(data.map(t => t.id));
+      traques.filter(t => !ids.has(t.id)).forEach(t => ops.push(["del", "traques", t.id]));
+      data.forEach(t => ops.push(["set", "traques", t]));
+      if (acc) {
+        const aids = new Set(acc.map(a => a.id));
+        acces.filter(a => !aids.has(a.id)).forEach(a => ops.push(["del", "acces", a.id]));
+        acc.forEach(a => ops.push(["set", "acces", a]));
+      }
+      for (let i = 0; i < ops.length; i += 400) {   // limite Firestore : 500 opérations par lot
+        const batch = fb.writeBatch(fb.db);
+        ops.slice(i, i + 400).forEach(([op, col, v]) => {
+          if (op === "del") batch.delete(fb.doc(fb.db, col, v));
+          else batch.set(fb.doc(fb.db, col, v.id), clean(v));
+        });
+        await batch.commit();
+      }
+      toast("Import réussi");
+    } catch (err) { netError(err); toast("Échec de l'import"); }
+  };
+  r.readAsText(file);
+};
+
+/* ---------------- Démarrage ---------------- */
+session = null;
+if (CLOUD) {
+  initCloud();       // la session est restaurée une fois les données reçues
+} else {
+  setNet("Mode local — Firebase non configuré");
+  restoreSession();
+}
+</script>
+</body>
+</html>
