@@ -248,6 +248,120 @@
   [contenteditable=true] { outline: 1px dashed var(--muted); cursor: text; user-select: text; -webkit-user-select: text; }
   .board-hint { position: absolute; left: 14px; bottom: 14px; background: rgba(14,6,8,.9); border: 1px solid var(--line-2); padding: 7px 12px; font-size: 13px; color: var(--muted); pointer-events: none; max-width: calc(100% - 28px); }
 
+  /* ---------- ONGLETS ---------- */
+  .tabs { display: flex; gap: 4px; margin-bottom: 22px; border-bottom: 1px solid var(--line); }
+  .tab { background: none; border: none; border-bottom: 2px solid transparent; color: var(--muted); padding: 10px 16px; cursor: pointer;
+    font-family: 'Cinzel'; font-size: 13px; letter-spacing: .15em; text-transform: uppercase; margin-bottom: -1px; }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: #fff; border-bottom-color: var(--glow); text-shadow: 0 0 10px rgba(255,31,61,.6); }
+
+  .prio-tag { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: #1a0005;
+    background: linear-gradient(180deg, #ff4a62, #c8001f); padding: 2px 7px; box-shadow: 0 0 10px rgba(255,31,61,.5); }
+  .prio-tag.haute { background: none; color: var(--warn); border: 1px solid var(--warn); box-shadow: none; padding: 1px 6px; }
+  .card .prio-tag { position: absolute; top: 10px; left: 10px; z-index: 1; }
+  .card.is-prio { border-color: rgba(255,31,61,.55); }
+  .prio-pick { display: flex; flex-wrap: wrap; gap: 6px; }
+  .prio-pick label { border: 1px solid var(--line); padding: 7px 11px; cursor: pointer; font-size: 13px; font-weight: 600; background: #080405; }
+  .prio-pick input { display: none; }
+  .prio-pick label.on { border-color: var(--glow); color: #fff; background: rgba(255,31,61,.15); }
+
+  /* ---------- PAGE PROTOCOLE ---------- */
+  .guide { max-width: 980px; margin: 0 auto; line-height: 1.55; }
+  .g-hero { display: flex; gap: 22px; align-items: center; padding: 26px; border: 1px solid var(--line-2); margin-bottom: 18px;
+    background: linear-gradient(120deg, rgba(179,0,27,.18), rgba(16,7,9,.6) 60%); }
+  .g-hero .emblem { width: 84px; height: 84px; flex-shrink: 0; }
+  .g-kicker { font-family: 'Cinzel'; color: var(--glow); font-size: 11px; letter-spacing: .35em; text-transform: uppercase; }
+  .g-hero h2 { font-size: 28px; margin: 4px 0 8px; }
+  .g-hero p { color: #d3c6c8; }
+  .g-toc { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 30px; }
+  .g-toc a { color: var(--muted); text-decoration: none; border: 1px solid var(--line); padding: 5px 11px; font-size: 13px; font-weight: 600; letter-spacing: .05em; }
+  .g-toc a:hover { color: #fff; border-color: var(--red); }
+  .g-sec { margin-bottom: 44px; scroll-margin-top: 90px; }
+  .g-sec h3 { font-size: 18px; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+  .g-sec h3 span { font-size: 12px; color: var(--glow); width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center; position: relative; flex-shrink: 0; }
+  .g-sec h3 span::before { content: ''; position: absolute; inset: 4px; border: 1px solid var(--red); transform: rotate(45deg); box-shadow: 0 0 8px rgba(255,31,61,.35); }
+  .g-lead { color: #d3c6c8; margin-bottom: 16px; }
+  .g-note { color: var(--muted); font-size: 14px; margin-top: 14px; }
+  .g-alert { border: 1px solid var(--red); border-left: 4px solid var(--glow); background: rgba(179,0,27,.12); padding: 14px 16px; margin-bottom: 16px; color: #e8dcdd; }
+  .g-alert b { color: #fff; display: block; margin-bottom: 2px; }
+  .g-roles { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; }
+  .g-role { background: var(--panel); border: 1px solid var(--line); border-top: 3px solid var(--line-2); padding: 16px; }
+  .g-role p { color: #cdbfc1; font-size: 15px; }
+  .g-role-h { font-family: 'Cinzel'; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 8px; font-size: 14px; }
+  .r-hc { border-top-color: #fff; } .r-hc .g-role-h { color: #fff; }
+  .r-ref { border-top-color: var(--gold); } .r-ref .g-role-h { color: var(--gold); }
+  .r-mar { border-top-color: #9b7cff; } .r-mar .g-role-h { color: #b9a3ff; }
+  .r-ass { border-top-color: var(--glow); } .r-ass .g-role-h { color: #ff5a72; }
+  .g-steps { list-style: none; position: relative; }
+  .g-steps::before { content: ''; position: absolute; left: 19px; top: 10px; bottom: 10px; width: 2px; background: linear-gradient(var(--glow), var(--red-dim)); }
+  .g-steps li { display: flex; gap: 18px; padding: 0 0 18px; position: relative; }
+  .g-step-n { width: 40px; height: 40px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-family: 'Cinzel'; font-weight: 700;
+    background: #0c0507; border: 2px solid var(--glow); color: #fff; border-radius: 50%; box-shadow: 0 0 12px rgba(255,31,61,.4); z-index: 1; }
+  .g-steps b { font-size: 17px; }
+  .g-steps p { color: #cdbfc1; margin: 2px 0 4px; }
+  .g-steps em { font-style: normal; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  .g-prio { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+  .g-p { background: var(--panel); border: 1px solid var(--line); padding: 16px; position: relative; }
+  .g-p b { font-family: 'Cinzel'; font-size: 16px; letter-spacing: .05em; display: block; margin: 6px 0 4px; }
+  .g-p p { color: #cdbfc1; font-size: 14px; }
+  .g-p-tag { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; padding: 2px 7px; }
+  .p-abs { border-color: rgba(255,31,61,.6); box-shadow: inset 0 0 24px rgba(255,31,61,.12); }
+  .p-abs .g-p-tag { background: var(--glow); color: #1a0005; }
+  .p-haute .g-p-tag { color: var(--warn); border: 1px solid var(--warn); }
+  .g-table { border: 1px solid var(--line); }
+  .g-tr { display: grid; grid-template-columns: 160px 1fr 240px; border-top: 1px solid var(--line); }
+  .g-tr > div { padding: 11px 14px; }
+  .g-tr:first-child { border-top: none; }
+  .g-th { background: var(--panel-2); font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+  .g-tr i { display: inline-block; width: 10px; height: 10px; transform: rotate(45deg); margin-right: 10px; }
+  .g-tr > div:first-child { font-weight: 700; }
+  .g-schema { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 22px; align-items: center; margin-bottom: 26px;
+    background: var(--panel); border: 1px solid var(--line); padding: 16px; }
+  .g-schema svg { width: 100%; height: auto; display: block; }
+  .g-schema h4 { font-family: 'Cinzel'; font-size: 17px; letter-spacing: .1em; text-transform: uppercase; color: #fff; margin-bottom: 8px; }
+  .g-schema p { color: #d3c6c8; margin-bottom: 10px; }
+  .g-schema ul, .g-rules { padding-left: 18px; color: #cdbfc1; }
+  .g-schema li { margin-bottom: 4px; font-size: 15px; }
+  .g-schema li::marker, .g-rules li::marker { color: var(--glow); }
+  .g-rules li { margin-bottom: 10px; padding-left: 4px; }
+  .g-rules b { color: #fff; }
+  .g-legend { display: flex; flex-wrap: wrap; gap: 18px; font-size: 14px; color: var(--muted); }
+  .g-legend i { display: inline-block; width: 14px; height: 14px; margin-right: 7px; vertical-align: -2px; border-radius: 50%; }
+  .lg-m { background: #2a1d4d; border: 2px solid #9b7cff; }
+  .lg-a { background: #4d0610; border: 2px solid var(--glow); }
+  .lg-t { background: #fff; border-radius: 0 !important; transform: rotate(45deg) scale(.8); }
+  .lg-z { border: 2px dashed var(--glow); }
+  /* éléments des schémas */
+  .sv-bg { fill: #080405; stroke: #2a1216; }
+  .sv-zone { fill: rgba(255,31,61,.08); stroke: #ff1f3d; stroke-dasharray: 6 5; stroke-width: 1.5; }
+  .sv-ray { stroke: #ff1f3d; stroke-width: 1.5; stroke-dasharray: 3 5; opacity: .85; }
+  .sv-agent circle { fill: #2a1d4d; stroke: #9b7cff; stroke-width: 2; }
+  .sv-assassin circle { fill: #4d0610; stroke: #ff1f3d; stroke-width: 2.5; filter: drop-shadow(0 0 5px rgba(255,31,61,.7)); }
+  .sv-assassin.a2 circle { opacity: .6; }
+  .sv-bait circle { fill: #2a1d4d; stroke: #c9a24a; stroke-width: 2; stroke-dasharray: 3 3; }
+  .sv-agent text, .sv-assassin text, .sv-bait text { fill: #fff; font: 700 13px 'Rajdhani', sans-serif; text-anchor: middle; }
+  .sv-target path { fill: #fff; filter: drop-shadow(0 0 6px rgba(255,255,255,.6)); }
+  .sv-lbl { fill: #ff5a72; font: 700 14px 'Rajdhani', sans-serif; text-anchor: middle; letter-spacing: .08em; text-transform: uppercase; }
+  .sv-sub { fill: #9a8689; font: 600 12px 'Rajdhani', sans-serif; text-anchor: middle; letter-spacing: .05em; }
+  .sv-path { fill: none; stroke: #ece4e5; stroke-width: 2; stroke-dasharray: 2 6; stroke-linecap: round; }
+  .sv-follow { fill: none; stroke: #9b7cff; stroke-width: 2; stroke-dasharray: 8 5; }
+  .sv-follow.f2 { opacity: .8; }
+  .sv-strike { stroke: #ff1f3d; stroke-width: 2.5; }
+  .sv-arc { fill: none; stroke: #9b7cff; stroke-width: 1.5; stroke-dasharray: 4 6; opacity: .6; }
+  .sv-push { stroke: #c9a24a; stroke-width: 2; }
+  .sv-wall { stroke: #ff1f3d; stroke-width: 1; stroke-dasharray: 2 4; opacity: .5; }
+  .sv-block { fill: #1a0d10; stroke: #3d2328; }
+
+  @media (max-width: 760px) {
+    .g-schema { grid-template-columns: 1fr; }
+    .g-tr { grid-template-columns: 1fr; }
+    .g-tr > div { padding: 6px 14px; }
+    .g-tr > div:first-child { padding-top: 12px; }
+    .g-tr > div:last-child { padding-bottom: 12px; color: var(--gold); }
+    .g-th { display: none; }
+    .g-hero { flex-direction: column; text-align: center; }
+  }
+
   @media (max-width: 640px) {
     header { padding: 12px 16px; }
     .form-grid { grid-template-columns: 1fr; }
@@ -316,12 +430,227 @@
   </header>
 
   <main>
+    <nav class="tabs">
+      <button class="tab active" data-page="registre">Registre</button>
+      <button class="tab" data-page="protocole">Protocole de traque</button>
+    </nav>
+
+    <!-- ================= PAGE PROTOCOLE ================= -->
+    <div id="pageProtocole" class="hidden guide">
+
+      <div class="g-hero">
+        <svg class="emblem"><use href="#emblem"/></svg>
+        <div>
+          <div class="g-kicker">Directive du Haut-Commandement</div>
+          <h2>Protocole de traque</h2>
+          <p>Ce document définit comment une traque est ordonnée, menée et clôturée au sein de l'Empire. Tout agent habilité doit le connaître avant sa première mission.</p>
+        </div>
+      </div>
+
+      <div class="g-toc">
+        <a href="#g-qui">Qui traque</a><a href="#g-deroule">Déroulement</a><a href="#g-prio">Cibles prioritaires</a>
+        <a href="#g-danger">Dangerosité</a><a href="#g-schemas">Schémas de chasse</a><a href="#g-regles">Règles d'engagement</a>
+      </div>
+
+      <!-- QUI TRAQUE -->
+      <section class="g-sec" id="g-qui">
+        <h3><span>I</span> Qui traque</h3>
+        <div class="g-alert">
+          <b>Seuls les Maraudeurs et les Assassins sont habilités à traquer, et uniquement sur ordre du Haut-Commandement.</b>
+          Toute traque menée sans autorisation est considérée comme un acte d'insubordination.
+        </div>
+        <div class="g-roles">
+          <div class="g-role r-hc">
+            <div class="g-role-h">Haut-Commandement</div>
+            <p>Autorité suprême. Désigne les cibles, fixe le motif, la priorité et la condition (mort, vivant, mort ou vif). Aucune traque n'existe sans son ordre.</p>
+          </div>
+          <div class="g-role r-ref">
+            <div class="g-role-h">Référent Traque</div>
+            <p>Exécute l'ordre du Haut-Commandement : ouvre le dossier dans le registre, crée les accès, assigne les agents, supervise et valide la clôture.</p>
+          </div>
+          <div class="g-role r-mar">
+            <div class="g-role-h">Maraudeur</div>
+            <p>Les yeux de l'Empire. Renseignement, repérage, filature, triangulation et rabattage. Transmet ses signalements dans le registre et alimente le tableau d'enquête. Ne neutralise pas la cible, sauf ordre ou légitime défense.</p>
+          </div>
+          <div class="g-role r-ass">
+            <div class="g-role-h">Assassin</div>
+            <p>La lame de l'Empire. Prend la traque en charge et procède à la neutralisation ou à la capture, dans le respect de la condition fixée. Fournit la preuve de clôture.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- DÉROULEMENT -->
+      <section class="g-sec" id="g-deroule">
+        <h3><span>II</span> Déroulement d'une traque</h3>
+        <ol class="g-steps">
+          <li><div class="g-step-n">1</div><div><b>Ordre</b><p>Le Haut-Commandement désigne la cible, le motif, la priorité et la condition de capture.</p><em>Haut-Commandement</em></div></li>
+          <li><div class="g-step-n">2</div><div><b>Ouverture du dossier</b><p>Le Référent crée la traque dans le registre : identité, race, motif, dangerosité, prime. Le tableau d'enquête s'ouvre.</p><em>Référent · statut « Active »</em></div></li>
+          <li><div class="g-step-n">3</div><div><b>Renseignement</b><p>Les Maraudeurs collectent les informations : apparence, tenue, cristal, manche, armes, habitudes, complices. Tout est épinglé au tableau.</p><em>Maraudeurs</em></div></li>
+          <li><div class="g-step-n">4</div><div><b>Localisation</b><p>Recoupement des signalements, triangulation et filature jusqu'à confirmer la position de la cible.</p><em>Maraudeurs</em></div></li>
+          <li><div class="g-step-n">5</div><div><b>Intervention</b><p>Un Assassin prend la traque. Les Maraudeurs assurent le soutien (rabattage, couverture). La condition de capture est respectée.</p><em>Assassin · statut « En cours »</em></div></li>
+          <li><div class="g-step-n">6</div><div><b>Clôture</b><p>Preuve fournie (photo, équipement récupéré), rapport transmis. Le dossier passe en « Capturée » ou « Éliminée ». Le Référent valide.</p><em>Assassin + Référent</em></div></li>
+        </ol>
+      </section>
+
+      <!-- CIBLES PRIORITAIRES -->
+      <section class="g-sec" id="g-prio">
+        <h3><span>III</span> Cibles prioritaires</h3>
+        <p class="g-lead">Une cible est <b>prioritaire</b> dès qu'elle remplit au moins un des critères ci-dessous. Elle passe devant toutes les autres traques, et son équipement unique doit être récupéré si possible et remis au Haut-Commandement.</p>
+        <div class="g-prio">
+          <div class="g-p p-abs"><div class="g-p-tag">Priorité absolue</div><b>Pouvoir unique</b><p>Capacité de la Force qu'aucun autre ne possède. À neutraliser ou capturer pour étude.</p></div>
+          <div class="g-p p-abs"><div class="g-p-tag">Priorité absolue</div><b>Lame unique</b><p>Sabre ou lame unique (cristal, manche ou forge particulière). Récupération exigée.</p></div>
+          <div class="g-p p-abs"><div class="g-p-tag">Priorité absolue</div><b>Double lame unique</b><p>Sabre double ou arme à double lame unique. Récupération exigée.</p></div>
+          <div class="g-p p-abs"><div class="g-p-tag">Priorité absolue</div><b>Arme unique</b><p>Toute arme non réglementaire ou d'exception (blaster, armure, artefact). Récupération exigée.</p></div>
+          <div class="g-p p-haute"><div class="g-p-tag">Priorité haute</div><b>Pouvoir T5</b><p>Maîtrise de la Force au plus haut rang. Opération dirigée par le Haut-Commandement.</p></div>
+          <div class="g-p p-haute"><div class="g-p-tag">Priorité haute</div><b>Pouvoir T4</b><p>Utilisateur de la Force de haut rang. Jamais engagé par un agent seul.</p></div>
+        </div>
+        <p class="g-note">Ces critères se cochent dans le formulaire d'une traque. Le dossier est alors marqué <span class="prio-tag">Priorité absolue</span> ou <span class="prio-tag haute">Priorité haute</span> dans le registre, et les priorités absolues passent en tête de liste.</p>
+      </section>
+
+      <!-- DANGEROSITÉ -->
+      <section class="g-sec" id="g-danger">
+        <h3><span>IV</span> Niveaux de dangerosité</h3>
+        <div class="g-table">
+          <div class="g-tr g-th"><div>Niveau</div><div>Profil de la cible</div><div>Effectif minimum</div></div>
+          <div class="g-tr"><div><i style="background:#3fa66b"></i>1 · Faible</div><div>Civil, contrebandier isolé, peu armé.</div><div>1 Assassin</div></div>
+          <div class="g-tr"><div><i style="background:#c9b52a"></i>2 · Modéré</div><div>Combattant entraîné, armé.</div><div>1 Assassin + 1 Maraudeur</div></div>
+          <div class="g-tr"><div><i style="background:#e08a1e"></i>3 · Élevé</div><div>Vétéran, sensible à la Force, ou entouré.</div><div>2 agents minimum</div></div>
+          <div class="g-tr"><div><i style="background:#e0461e"></i>4 · Extrême</div><div>Pouvoir T4, lame ou arme unique.</div><div>Équipe complète, accord du Référent</div></div>
+          <div class="g-tr"><div><i style="background:#ff1f3d"></i>5 · Critique</div><div>Pouvoir T5 ou pouvoir unique.</div><div>Opération du Haut-Commandement</div></div>
+        </div>
+      </section>
+
+      <!-- SCHÉMAS -->
+      <section class="g-sec" id="g-schemas">
+        <h3><span>V</span> Schémas de chasse</h3>
+
+        <div class="g-schema">
+          <svg viewBox="0 0 600 340" role="img" aria-label="Schéma de triangulation">
+            <defs><marker id="ar1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#ff1f3d"/></marker></defs>
+            <rect x="1" y="1" width="598" height="338" class="sv-bg"/>
+            <circle cx="330" cy="160" r="46" class="sv-zone"/>
+            <line x1="90" y1="70" x2="352" y2="172" class="sv-ray"/>
+            <line x1="520" y1="80" x2="312" y2="168" class="sv-ray"/>
+            <line x1="250" y1="310" x2="334" y2="140" class="sv-ray"/>
+            <g class="sv-agent"><circle cx="90" cy="70" r="16"/><text x="90" y="75">M1</text></g>
+            <g class="sv-agent"><circle cx="520" cy="80" r="16"/><text x="520" y="85">M2</text></g>
+            <g class="sv-agent"><circle cx="250" cy="310" r="16"/><text x="250" y="315">M3</text></g>
+            <g class="sv-target"><path d="M330 146 L344 160 L330 174 L316 160 Z"/></g>
+            <text x="330" y="226" class="sv-lbl">Zone de la cible</text>
+            <text x="90" y="104" class="sv-sub">Signalement 1</text>
+            <text x="520" y="114" class="sv-sub">Signalement 2</text>
+            <text x="274" y="314" class="sv-sub" text-anchor="start">Signalement 3</text>
+          </svg>
+          <div>
+            <h4>Triangulation</h4>
+            <p>Trois Maraudeurs, placés en des points éloignés, transmettent chacun la direction où ils ont aperçu la cible. Là où ces directions se croisent se trouve sa position probable.</p>
+            <ul><li>Trois signalements minimum, pris à peu près au même moment.</li><li>Chaque signalement indique le lieu de l'observateur et la direction.</li><li>Le Référent reporte les lignes sur le tableau d'enquête.</li></ul>
+          </div>
+        </div>
+
+        <div class="g-schema">
+          <svg viewBox="0 0 600 340" role="img" aria-label="Schéma de filature">
+            <defs><marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#ff1f3d"/></marker></defs>
+            <rect x="1" y="1" width="598" height="338" class="sv-bg"/>
+            <path d="M40 260 C140 260 160 120 260 130 S420 250 540 110" class="sv-path" marker-end="url(#ar2)"/>
+            <g class="sv-target"><path d="M540 96 L554 110 L540 124 L526 110 Z"/></g>
+            <path d="M40 290 C120 290 150 170 230 165" class="sv-follow"/>
+            <path d="M300 205 C360 240 420 250 470 190" class="sv-follow f2"/>
+            <g class="sv-agent"><circle cx="230" cy="165" r="15"/><text x="230" y="170">M1</text></g>
+            <g class="sv-agent"><circle cx="470" cy="190" r="15"/><text x="470" y="195">M2</text></g>
+            <g class="sv-assassin"><circle cx="560" cy="45" r="16"/><text x="560" y="50">A</text></g>
+            <line x1="555" y1="62" x2="545" y2="92" class="sv-strike" marker-end="url(#ar2)"/>
+            <text x="270" y="232" class="sv-sub">Relais</text>
+            <text x="470" y="40" class="sv-sub">Interception</text>
+            <text x="40" y="236" class="sv-sub" text-anchor="start">Trajet de la cible</text>
+          </svg>
+          <div>
+            <h4>Filature et relais</h4>
+            <p>La cible est suivie à distance, sans jamais être approchée. Pour ne pas être repéré, un Maraudeur passe le relais à un autre en cours de route. L'Assassin attend au point d'interception.</p>
+            <ul><li>Distance constante, jamais dans le champ de vision direct.</li><li>Relais dès que la cible ralentit ou se retourne.</li><li>L'Assassin n'intervient qu'au signal du dernier Maraudeur.</li></ul>
+          </div>
+        </div>
+
+        <div class="g-schema">
+          <svg viewBox="0 0 600 340" role="img" aria-label="Schéma de rabattage">
+            <defs><marker id="ar3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#c9a24a"/></marker></defs>
+            <rect x="1" y="1" width="598" height="338" class="sv-bg"/>
+            <path d="M120 60 A170 170 0 0 0 120 280" class="sv-arc"/>
+            <g class="sv-agent"><circle cx="150" cy="70" r="15"/><text x="150" y="75">M1</text></g>
+            <g class="sv-agent"><circle cx="95" cy="170" r="15"/><text x="95" y="175">M2</text></g>
+            <g class="sv-agent"><circle cx="150" cy="270" r="15"/><text x="150" y="275">M3</text></g>
+            <line x1="172" y1="85" x2="250" y2="140" class="sv-push" marker-end="url(#ar3)"/>
+            <line x1="118" y1="170" x2="235" y2="170" class="sv-push" marker-end="url(#ar3)"/>
+            <line x1="172" y1="255" x2="250" y2="200" class="sv-push" marker-end="url(#ar3)"/>
+            <g class="sv-target"><path d="M290 156 L304 170 L290 184 L276 170 Z"/></g>
+            <path d="M310 170 L430 170" class="sv-path" marker-end="url(#ar2)"/>
+            <path d="M470 110 L470 230" class="sv-wall"/>
+            <g class="sv-assassin"><circle cx="470" cy="170" r="17"/><text x="470" y="175">A</text></g>
+            <g class="sv-assassin a2"><circle cx="540" cy="110" r="13"/><text x="540" y="115">A</text></g>
+            <text x="290" y="210" class="sv-sub">Cible poussée</text>
+            <text x="470" y="258" class="sv-sub">Seule issue</text>
+          </svg>
+          <div>
+            <h4>Rabattage</h4>
+            <p>Les Maraudeurs se déploient en arc et avancent ensemble pour pousser la cible vers la seule issue laissée libre. L'Assassin l'attend à cette sortie, éventuellement doublé d'un second en couverture.</p>
+            <ul><li>Adapté aux cibles de dangerosité 3 et plus.</li><li>Les Maraudeurs se montrent volontairement pour orienter la fuite.</li><li>L'issue est choisie à l'avance sur le tableau d'enquête.</li></ul>
+          </div>
+        </div>
+
+        <div class="g-schema">
+          <svg viewBox="0 0 600 340" role="img" aria-label="Schéma d'embuscade">
+            <rect x="1" y="1" width="598" height="338" class="sv-bg"/>
+            <rect x="200" y="40" width="200" height="70" class="sv-block"/>
+            <rect x="200" y="230" width="200" height="70" class="sv-block"/>
+            <text x="300" y="80" class="sv-sub">Couvert</text>
+            <text x="300" y="270" class="sv-sub">Couvert</text>
+            <path d="M40 170 L280 170" class="sv-path" marker-end="url(#ar2)"/>
+            <g class="sv-target"><path d="M300 156 L314 170 L300 184 L286 170 Z"/></g>
+            <g class="sv-bait"><circle cx="500" cy="170" r="16"/><text x="500" y="175">M</text></g>
+            <text x="500" y="205" class="sv-sub">Appât</text>
+            <g class="sv-assassin"><circle cx="300" cy="125" r="16"/><text x="300" y="130">A</text></g>
+            <g class="sv-assassin"><circle cx="300" cy="215" r="16"/><text x="300" y="220">A</text></g>
+            <line x1="300" y1="141" x2="300" y2="152" class="sv-strike" marker-end="url(#ar2)"/>
+            <line x1="300" y1="199" x2="300" y2="188" class="sv-strike" marker-end="url(#ar2)"/>
+            <circle cx="300" cy="170" r="60" class="sv-zone"/>
+            <text x="120" y="155" class="sv-sub">Trajet attendu</text>
+          </svg>
+          <div>
+            <h4>Embuscade</h4>
+            <p>La cible est attirée vers un point choisi (faux rendez-vous, information volontairement divulguée, Maraudeur servant d'appât). Les Assassins attendent à couvert de part et d'autre et frappent en même temps.</p>
+            <ul><li>Réservé aux cibles dont les habitudes sont connues.</li><li>Le lieu doit offrir du couvert des deux côtés.</li><li>Frappe simultanée, au signal unique.</li></ul>
+          </div>
+        </div>
+        <div class="g-legend">
+          <span><i class="lg-m"></i>Maraudeur</span><span><i class="lg-a"></i>Assassin</span><span><i class="lg-t"></i>Cible</span><span><i class="lg-z"></i>Zone d'action</span>
+        </div>
+      </section>
+
+      <!-- RÈGLES -->
+      <section class="g-sec" id="g-regles">
+        <h3><span>VI</span> Règles d'engagement</h3>
+        <ol class="g-rules">
+          <li><b>Aucune traque sans ordre.</b> Seul le Haut-Commandement désigne une cible.</li>
+          <li><b>Discrétion absolue.</b> La cible ne doit jamais savoir qu'elle est traquée avant l'intervention.</li>
+          <li><b>Respect de la condition.</b> « Vivant uniquement » signifie vivant. Toute erreur est rapportée au Référent.</li>
+          <li><b>Jamais seul face au rang supérieur.</b> Une cible T4, T5 ou à pouvoir unique ne s'engage jamais en solitaire.</li>
+          <li><b>Tout passe par le registre.</b> Signalements, photos et pièces sont consignés dans le dossier et sur le tableau d'enquête.</li>
+          <li><b>Récupération de l'équipement unique.</b> Lame, double lame, cristal ou arme unique sont remis au Haut-Commandement.</li>
+          <li><b>Preuve de clôture.</b> Une traque n'est clôturée qu'avec une preuve et un rapport.</li>
+          <li><b>Abandon déclaré.</b> Un Assassin qui ne peut poursuivre remet la traque en circulation dans le registre.</li>
+        </ol>
+      </section>
+    </div>
+
+    <!-- ================= PAGE REGISTRE ================= -->
+    <div id="pageRegistre">
     <div class="stats" id="stats"></div>
 
     <div class="toolbar">
       <input type="text" id="search" placeholder="Rechercher un nom, une race, un motif…">
       <select id="fStatus"><option value="">Tous les statuts</option></select>
       <select id="fDanger"><option value="">Toute dangerosité</option></select>
+      <select id="fPrio"><option value="">Toutes les cibles</option><option value="1">Toutes les prioritaires</option><option value="2">Priorité absolue</option><option value="h">Priorité haute</option></select>
       <select id="fSort">
         <option value="recent">Plus récentes</option>
         <option value="danger">Plus dangereuses</option>
@@ -333,12 +662,6 @@
 
     <div class="grid" id="grid"></div>
 
-    <div class="toolbar" id="adminTools" style="margin-top:28px">
-      <span style="color:var(--muted);font-size:13px">Sauvegarde des dossiers et accès :</span>
-      <button class="btn small" id="exportBtn">Exporter (.json)</button>
-      <label class="btn small" style="display:inline-block">Importer (.json)
-        <input type="file" id="importFile" accept=".json,application/json" hidden>
-      </label>
     </div>
   </main>
 </section>
@@ -393,6 +716,14 @@ const DANGER = [
 const STATUS = { active: "Active", cours: "En cours", capturee: "Capturée", eliminee: "Éliminée", annulee: "Annulée" };
 const MODES = { vivant: "Vivant uniquement", mort: "Mort", indifferent: "Mort ou vif" };
 const RACES = ["Humain","Sith Sang-Pur","Chiss","Zabrak","Twi'lek","Rattataki","Cathar","Mirialan","Miraluka","Togruta","Nautolan","Kel Dor","Rodien","Trandoshan","Wookiee","Cyborg","Droïde"];
+
+const PRIO_ABS = ["Pouvoir unique", "Lame unique", "Double lame unique", "Arme unique"];   // priorité absolue
+const PRIO_HAUTE = ["Pouvoir T5", "Pouvoir T4"];                                             // priorité haute
+const PRIO = [...PRIO_ABS, ...PRIO_HAUTE];
+const isPrio = t => Array.isArray(t.prioritaires) && t.prioritaires.length > 0;
+/* 2 = absolue, 1 = haute, 0 = aucune */
+const prioLevel = t => !isPrio(t) ? 0 : t.prioritaires.some(p => PRIO_ABS.includes(p)) ? 2 : 1;
+const prioBadge = t => prioLevel(t) === 2 ? `<span class="prio-tag">Priorité absolue</span>` : prioLevel(t) === 1 ? `<span class="prio-tag haute">Priorité haute</span>` : "";
 
 const STORE_KEY = "registre_traques_v1";
 const ACCESS_KEY = "registre_acces_v1";
@@ -578,7 +909,6 @@ function showApp() {
   r.textContent = CONFIG.roles[session.role].label;
   r.className = "badge b-" + session.role;
   $("#newBtn").classList.toggle("hidden", !can("create"));
-  $("#adminTools").classList.toggle("hidden", !can("backup"));
   $("#accessBtn").classList.toggle("hidden", session.role !== "referent");
   render();
 }
@@ -670,7 +1000,21 @@ $("#accessBtn").onclick = openAccess;
 /* ---------------- Liste des traques ---------------- */
 $("#fStatus").innerHTML += Object.entries(STATUS).map(([k, v]) => `<option value="${k}">${v}</option>`).join("");
 $("#fDanger").innerHTML += DANGER.map(d => `<option value="${d.v}">${d.v} — ${d.label}</option>`).join("");
-["#search", "#fStatus", "#fDanger", "#fSort"].forEach(s => $(s).addEventListener("input", render));
+["#search", "#fStatus", "#fDanger", "#fPrio", "#fSort"].forEach(s => $(s).addEventListener("input", render));
+
+/* Onglets Registre / Protocole */
+function showPage(p) {
+  document.querySelectorAll(".tab").forEach(b => b.classList.toggle("active", b.dataset.page === p));
+  $("#pageRegistre").classList.toggle("hidden", p !== "registre");
+  $("#pageProtocole").classList.toggle("hidden", p !== "protocole");
+  window.scrollTo(0, 0);
+}
+document.querySelectorAll(".tab").forEach(b => b.onclick = () => showPage(b.dataset.page));
+document.querySelectorAll(".g-toc a").forEach(a => a.onclick = e => {
+  e.preventDefault();
+  const t = document.querySelector(a.getAttribute("href"));
+  if (t) t.scrollIntoView({ behavior: "smooth", block: "start" });
+});
 
 function render() {
   if (!session) return;
@@ -680,13 +1024,16 @@ function render() {
     <div class="stat s-active"><div class="n">${c("active")}</div><div class="l">Actives</div></div>
     <div class="stat s-cours"><div class="n">${c("cours")}</div><div class="l">En cours</div></div>
     <div class="stat s-done"><div class="n">${c("eliminee") + c("capturee")}</div><div class="l">Clôturées</div></div>
-    <div class="stat s-crit"><div class="n">${traques.filter(t => t.danger >= 4 && ["active","cours"].includes(t.statut)).length}</div><div class="l">Menaces majeures</div></div>`;
+    <div class="stat s-crit"><div class="n">${traques.filter(t => isPrio(t) && ["active","cours"].includes(t.statut)).length}</div><div class="l">Cibles prioritaires</div></div>`;
 
   const q = $("#search").value.toLowerCase().trim();
-  const fs = $("#fStatus").value, fd = $("#fDanger").value, sort = $("#fSort").value;
+  const fs = $("#fStatus").value, fd = $("#fDanger").value, fp = $("#fPrio").value, sort = $("#fSort").value;
   const list = traques.filter(t => {
     if (fs && t.statut !== fs) return false;
     if (fd && String(t.danger) !== fd) return false;
+    if (fp === "1" && !isPrio(t)) return false;
+    if (fp === "2" && prioLevel(t) !== 2) return false;
+    if (fp === "h" && prioLevel(t) !== 1) return false;
     if (q) {
       const hay = [t.nom, t.prenom, t.alias, t.race, t.motif, t.affiliation, t.localisation].join(" ").toLowerCase();
       if (!hay.includes(q)) return false;
@@ -694,7 +1041,7 @@ function render() {
     return true;
   });
   const sorters = {
-    recent: (a, b) => (b.createdAt || 0) - (a.createdAt || 0),
+    recent: (a, b) => (prioLevel(b) - prioLevel(a)) || (b.createdAt || 0) - (a.createdAt || 0),
     danger: (a, b) => b.danger - a.danger,
     prime:  (a, b) => (b.prime || 0) - (a.prime || 0),
     nom:    (a, b) => (a.nom || "").localeCompare(b.nom || "", "fr")
@@ -711,8 +1058,9 @@ function render() {
     const d = DANGER[t.danger - 1] || DANGER[0];
     const closed = ["eliminee", "capturee"].includes(t.statut);
     return `
-    <article class="card" data-id="${esc(t.id)}">
+    <article class="card${prioLevel(t) === 2 ? " is-prio" : ""}" data-id="${esc(t.id)}" ${isPrio(t) ? `title="${esc(t.prioritaires.join(" · "))}"` : ""}>
       <div class="danger-bar" style="background:${d.color}"></div>
+      ${prioBadge(t)}
       ${closed ? `<div class="stamp">${STATUS[t.statut].toUpperCase()}</div>` : ""}
       <div class="card-top">
         <div class="portrait">${portrait(t)}</div>
@@ -770,6 +1118,12 @@ function openForm(id) {
             <label data-c="${d.color}"><input type="radio" name="danger" value="${d.v}" ${t.danger == d.v ? "checked" : ""}>${d.v} · ${d.label}</label>`).join("")}
           </div>
         </div>
+        <div class="field full">
+          <label class="f">Cible prioritaire — critères (voir Protocole)</label>
+          <div class="prio-pick">${PRIO.map(p => `
+            <label class="${(t.prioritaires || []).includes(p) ? "on" : ""}"><input type="checkbox" name="prio" value="${esc(p)}" ${(t.prioritaires || []).includes(p) ? "checked" : ""}>${esc(p)}</label>`).join("")}
+          </div>
+        </div>
         <div class="field"><label class="f">Prime (crédits)</label><input type="number" name="prime" min="0" step="100" value="${esc(t.prime)}"></div>
         <div class="field"><label class="f">Condition de capture</label>
           <select name="mode">${Object.entries(MODES).map(([k, v]) => `<option value="${k}" ${t.mode === k ? "selected" : ""}>${v}</option>`).join("")}</select>
@@ -797,11 +1151,23 @@ function openForm(id) {
     l.style.background = on ? l.dataset.c + "22" : "";
   });
   document.querySelectorAll(".danger-pick input").forEach(i => i.onchange = paint); paint();
+  document.querySelectorAll(".prio-pick input").forEach(i => i.onchange = () => {
+    i.parentElement.classList.toggle("on", i.checked);
+    // Pouvoir T5 ou unique → dangerosité critique proposée ; T4 → extrême
+    const checked = [...document.querySelectorAll(".prio-pick input:checked")].map(x => x.value);
+    const want = checked.some(v => v === "Pouvoir T5" || v === "Pouvoir unique") ? 5 : checked.includes("Pouvoir T4") ? 4 : 0;
+    const cur = Number((document.querySelector(".danger-pick input:checked") || {}).value) || 0;
+    if (want > cur) { const r = document.querySelector(`.danger-pick input[value="${want}"]`); if (r) { r.checked = true; paint(); } }
+  });
 
   $("#tForm").onsubmit = async e => {
     e.preventDefault();
     const btn = e.target.querySelector("[type=submit]"); btn.disabled = true;
-    const f = Object.fromEntries(new FormData(e.target).entries());
+    const fd = new FormData(e.target);
+    const prioritaires = fd.getAll("prio");
+    fd.delete("prio");
+    const f = Object.fromEntries(fd.entries());
+    f.prioritaires = prioritaires;
     f.danger = Number(f.danger) || 3;
     f.prime = f.prime ? Number(f.prime) : 0;
     for (const k in f) if (typeof f[k] === "string") f[k] = f[k].trim();
@@ -863,6 +1229,7 @@ function openDetail(id) {
           </div>
         </div>
       </div>
+      ${isPrio(t) ? `<div class="block"><h4>Cible prioritaire · ${prioLevel(t) === 2 ? "priorité absolue" : "priorité haute"}</h4><p>${t.prioritaires.map(p => `<span class="prio-tag${PRIO_ABS.includes(p) ? "" : " haute"}" style="margin:0 6px 6px 0">${esc(p)}</span>`).join("")}</p></div>` : ""}
       <div class="block"><h4>Motif</h4><p>${esc(t.motif)}</p></div>
       ${t.description ? `<div class="block"><h4>Signalement physique</h4><p>${esc(t.description)}</p></div>` : ""}
       ${t.notes ? `<div class="block"><h4>Notes / Consignes</h4><p>${esc(t.notes)}</p></div>` : ""}
@@ -917,56 +1284,6 @@ function openDetail(id) {
 }
 
 $("#newBtn").onclick = () => openForm(null);
-
-/* ---------------- Export / Import ---------------- */
-$("#exportBtn").onclick = () => {
-  const blob = new Blob([JSON.stringify({ traques, acces }, null, 2)], { type: "application/json" });
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download = `traques-${new Date().toISOString().slice(0, 10)}.json`;
-  a.click(); URL.revokeObjectURL(a.href);
-};
-$("#importFile").onchange = e => {
-  const file = e.target.files[0]; if (!file) return;
-  const r = new FileReader();
-  r.onload = async () => {
-    let data, acc;
-    try {
-      const raw = JSON.parse(r.result);
-      data = Array.isArray(raw) ? raw : raw.traques;
-      acc = Array.isArray(raw) ? null : raw.acces;
-      if (!Array.isArray(data) || data.some(t => !t || !t.id)) throw 0;
-      if (acc && (!Array.isArray(acc) || acc.some(a => !a || !a.id))) throw 0;
-    } catch (err) { toast("Fichier invalide"); e.target.value = ""; return; }
-    e.target.value = "";
-    if (!confirm(`Importer ${data.length} dossier(s)${acc ? ` et ${acc.length} accès` : ""} ? Les données actuelles seront remplacées.`)) return;
-    if (!CLOUD) {
-      traques = data; if (acc) acces = acc;
-      saveLocal(); render(); toast("Import réussi"); return;
-    }
-    try {
-      const ops = [];
-      const ids = new Set(data.map(t => t.id));
-      traques.filter(t => !ids.has(t.id)).forEach(t => ops.push(["del", "traques", t.id]));
-      data.forEach(t => ops.push(["set", "traques", t]));
-      if (acc) {
-        const aids = new Set(acc.map(a => a.id));
-        acces.filter(a => !aids.has(a.id)).forEach(a => ops.push(["del", "acces", a.id]));
-        acc.forEach(a => ops.push(["set", "acces", a]));
-      }
-      for (let i = 0; i < ops.length; i += 400) {
-        const batch = fb.writeBatch(fb.db);
-        ops.slice(i, i + 400).forEach(([op, col, v]) => {
-          if (op === "del") batch.delete(fb.doc(fb.db, col, v));
-          else batch.set(fb.doc(fb.db, col, v.id), clean(v));
-        });
-        await batch.commit();
-      }
-      toast("Import réussi");
-    } catch (err) { netError(err); toast("Échec de l'import"); }
-  };
-  r.readAsText(file);
-};
 
 /* =====================================================================
    TABLEAU D'ENQUÊTE
