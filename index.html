@@ -343,6 +343,7 @@
   .sv-target path { fill: #fff; filter: drop-shadow(0 0 6px rgba(255,255,255,.6)); }
   .sv-lbl { fill: #ff5a72; font: 700 14px 'Rajdhani', sans-serif; text-anchor: middle; letter-spacing: .08em; text-transform: uppercase; }
   .sv-sub { fill: #9a8689; font: 600 12px 'Rajdhani', sans-serif; text-anchor: middle; letter-spacing: .05em; }
+  .sv-sub.sv-start { text-anchor: start; }
   .sv-path { fill: none; stroke: #ece4e5; stroke-width: 2; stroke-dasharray: 2 6; stroke-linecap: round; }
   .sv-follow { fill: none; stroke: #9b7cff; stroke-width: 2; stroke-dasharray: 8 5; }
   .sv-follow.f2 { opacity: .8; }
@@ -351,6 +352,9 @@
   .sv-push { stroke: #c9a24a; stroke-width: 2; }
   .sv-wall { stroke: #ff1f3d; stroke-width: 1; stroke-dasharray: 2 4; opacity: .5; }
   .sv-block { fill: #1a0d10; stroke: #3d2328; }
+  .sv-follow.sv-red { stroke: #ff1f3d; opacity: .75; }
+  .sv-gap { stroke: #3d2328; stroke-width: 26; }
+  .sv-wall2 { stroke: #9b7cff; stroke-width: 3; stroke-dasharray: 6 4; }
 
   @media (max-width: 760px) {
     .g-schema { grid-template-columns: 1fr; }
@@ -456,25 +460,25 @@
       <section class="g-sec" id="g-qui">
         <h3><span>I</span> Qui traque</h3>
         <div class="g-alert">
-          <b>Seuls les Maraudeurs et les Assassins sont habilités à traquer, et uniquement sur ordre du Haut-Commandement.</b>
-          Toute traque menée sans autorisation est considérée comme un acte d'insubordination.
+          <b>Le Haut-Commandement et les Référents Traque décident seuls de qui est traqué, quand et où.</b>
+          Seuls les Assassins et les Maraudeurs sont habilités à mener une traque, et uniquement sur leur ordre. Toute traque lancée sans cet ordre est un acte d'insubordination.
         </div>
         <div class="g-roles">
           <div class="g-role r-hc">
             <div class="g-role-h">Haut-Commandement</div>
-            <p>Autorité suprême. Désigne les cibles, fixe le motif, la priorité et la condition (mort, vivant, mort ou vif). Aucune traque n'existe sans son ordre.</p>
+            <p>Autorité suprême. Décide avec les Référents de la cible, du moment et du lieu de la traque. Fixe le motif, la priorité et la condition (mort, vivant, mort ou vif).</p>
           </div>
           <div class="g-role r-ref">
             <div class="g-role-h">Référent Traque</div>
-            <p>Exécute l'ordre du Haut-Commandement : ouvre le dossier dans le registre, crée les accès, assigne les agents, supervise et valide la clôture.</p>
-          </div>
-          <div class="g-role r-mar">
-            <div class="g-role-h">Maraudeur</div>
-            <p>Les yeux de l'Empire. Renseignement, repérage, filature, triangulation et rabattage. Transmet ses signalements dans le registre et alimente le tableau d'enquête. Ne neutralise pas la cible, sauf ordre ou légitime défense.</p>
+            <p>Décide avec le Haut-Commandement de qui, quand et où l'on traque. Ouvre le dossier dans le registre, crée les accès, assigne les agents, supervise l'opération et valide la clôture.</p>
           </div>
           <div class="g-role r-ass">
             <div class="g-role-h">Assassin</div>
-            <p>La lame de l'Empire. Prend la traque en charge et procède à la neutralisation ou à la capture, dans le respect de la condition fixée. Fournit la preuve de clôture.</p>
+            <p>Renseignement et exécution. Identifie, observe et localise la cible : apparence, équipement, habitudes, complices. Alimente le tableau d'enquête. Lorsque la condition l'exige, procède à l'exécution de la cible.</p>
+          </div>
+          <div class="g-role r-mar">
+            <div class="g-role-h">Maraudeur</div>
+            <p>La traque pure et dure. Bloque les accès, coupe les voies de fuite, immobilise la cible et procède à sa capture. Intervient en équipe sur le terrain.</p>
           </div>
         </div>
       </section>
@@ -483,12 +487,12 @@
       <section class="g-sec" id="g-deroule">
         <h3><span>II</span> Déroulement d'une traque</h3>
         <ol class="g-steps">
-          <li><div class="g-step-n">1</div><div><b>Ordre</b><p>Le Haut-Commandement désigne la cible, le motif, la priorité et la condition de capture.</p><em>Haut-Commandement</em></div></li>
-          <li><div class="g-step-n">2</div><div><b>Ouverture du dossier</b><p>Le Référent crée la traque dans le registre : identité, race, motif, dangerosité, prime. Le tableau d'enquête s'ouvre.</p><em>Référent · statut « Active »</em></div></li>
-          <li><div class="g-step-n">3</div><div><b>Renseignement</b><p>Les Maraudeurs collectent les informations : apparence, tenue, cristal, manche, armes, habitudes, complices. Tout est épinglé au tableau.</p><em>Maraudeurs</em></div></li>
-          <li><div class="g-step-n">4</div><div><b>Localisation</b><p>Recoupement des signalements, triangulation et filature jusqu'à confirmer la position de la cible.</p><em>Maraudeurs</em></div></li>
-          <li><div class="g-step-n">5</div><div><b>Intervention</b><p>Un Assassin prend la traque. Les Maraudeurs assurent le soutien (rabattage, couverture). La condition de capture est respectée.</p><em>Assassin · statut « En cours »</em></div></li>
-          <li><div class="g-step-n">6</div><div><b>Clôture</b><p>Preuve fournie (photo, équipement récupéré), rapport transmis. Le dossier passe en « Capturée » ou « Éliminée ». Le Référent valide.</p><em>Assassin + Référent</em></div></li>
+          <li><div class="g-step-n">1</div><div><b>Décision</b><p>Le Haut-Commandement et les Référents décident de la cible, du moment et du lieu de la traque, ainsi que du motif, de la priorité et de la condition de capture.</p><em>Haut-Commandement + Référents</em></div></li>
+          <li><div class="g-step-n">2</div><div><b>Ouverture du dossier</b><p>Le Référent crée la traque dans le registre : identité, race, motif, dangerosité, prime. Le tableau d'enquête s'ouvre et les agents sont désignés.</p><em>Référent · statut « Active »</em></div></li>
+          <li><div class="g-step-n">3</div><div><b>Renseignement</b><p>Les Assassins collectent les informations : apparence, tenue, cristal, manche, armes, habitudes, complices. Tout est épinglé au tableau.</p><em>Assassins</em></div></li>
+          <li><div class="g-step-n">4</div><div><b>Localisation</b><p>Les Assassins recoupent les signalements, triangulent et prennent la cible en filature jusqu'à confirmer sa position.</p><em>Assassins</em></div></li>
+          <li><div class="g-step-n">5</div><div><b>Intervention</b><p><b>Capture :</b> les Maraudeurs bloquent les accès, immobilisent la cible et la capturent. <b>Exécution :</b> un Assassin élimine la cible. La condition fixée est respectée.</p><em>Maraudeurs ou Assassin · statut « En cours »</em></div></li>
+          <li><div class="g-step-n">6</div><div><b>Clôture</b><p>Preuve fournie (photo, équipement récupéré), rapport transmis. Le dossier passe en « Capturée » ou « Éliminée ». Le Référent valide.</p><em>Agents + Référent</em></div></li>
         </ol>
       </section>
 
@@ -512,9 +516,9 @@
         <h3><span>IV</span> Niveaux de dangerosité</h3>
         <div class="g-table">
           <div class="g-tr g-th"><div>Niveau</div><div>Profil de la cible</div><div>Effectif minimum</div></div>
-          <div class="g-tr"><div><i style="background:#3fa66b"></i>1 · Faible</div><div>Civil, contrebandier isolé, peu armé.</div><div>1 Assassin</div></div>
-          <div class="g-tr"><div><i style="background:#c9b52a"></i>2 · Modéré</div><div>Combattant entraîné, armé.</div><div>1 Assassin + 1 Maraudeur</div></div>
-          <div class="g-tr"><div><i style="background:#e08a1e"></i>3 · Élevé</div><div>Vétéran, sensible à la Force, ou entouré.</div><div>2 agents minimum</div></div>
+          <div class="g-tr"><div><i style="background:#3fa66b"></i>1 · Faible</div><div>Civil, contrebandier isolé, peu armé.</div><div>1 Maraudeur ou 1 Assassin</div></div>
+          <div class="g-tr"><div><i style="background:#c9b52a"></i>2 · Modéré</div><div>Combattant entraîné, armé.</div><div>2 Maraudeurs, ou 1 Assassin</div></div>
+          <div class="g-tr"><div><i style="background:#e08a1e"></i>3 · Élevé</div><div>Vétéran, sensible à la Force, ou entouré.</div><div>Équipe de Maraudeurs + 1 Assassin</div></div>
           <div class="g-tr"><div><i style="background:#e0461e"></i>4 · Extrême</div><div>Pouvoir T4, lame ou arme unique.</div><div>Équipe complète, accord du Référent</div></div>
           <div class="g-tr"><div><i style="background:#ff1f3d"></i>5 · Critique</div><div>Pouvoir T5 ou pouvoir unique.</div><div>Opération du Haut-Commandement</div></div>
         </div>
@@ -526,74 +530,81 @@
 
         <div class="g-schema">
           <svg viewBox="0 0 600 340" role="img" aria-label="Schéma de triangulation">
-            <defs><marker id="ar1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#ff1f3d"/></marker></defs>
+            <defs><marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#ff1f3d"/></marker>
+            <marker id="ar3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#c9a24a"/></marker>
+            <marker id="ar4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#9b7cff"/></marker></defs>
             <rect x="1" y="1" width="598" height="338" class="sv-bg"/>
             <circle cx="330" cy="160" r="46" class="sv-zone"/>
             <line x1="90" y1="70" x2="352" y2="172" class="sv-ray"/>
             <line x1="520" y1="80" x2="312" y2="168" class="sv-ray"/>
             <line x1="250" y1="310" x2="334" y2="140" class="sv-ray"/>
-            <g class="sv-agent"><circle cx="90" cy="70" r="16"/><text x="90" y="75">M1</text></g>
-            <g class="sv-agent"><circle cx="520" cy="80" r="16"/><text x="520" y="85">M2</text></g>
-            <g class="sv-agent"><circle cx="250" cy="310" r="16"/><text x="250" y="315">M3</text></g>
+            <g class="sv-assassin"><circle cx="90" cy="70" r="16"/><text x="90" y="75">A1</text></g>
+            <g class="sv-assassin"><circle cx="520" cy="80" r="16"/><text x="520" y="85">A2</text></g>
+            <g class="sv-assassin"><circle cx="250" cy="310" r="16"/><text x="250" y="315">A3</text></g>
             <g class="sv-target"><path d="M330 146 L344 160 L330 174 L316 160 Z"/></g>
             <text x="330" y="226" class="sv-lbl">Zone de la cible</text>
-            <text x="90" y="104" class="sv-sub">Signalement 1</text>
-            <text x="520" y="114" class="sv-sub">Signalement 2</text>
-            <text x="274" y="314" class="sv-sub" text-anchor="start">Signalement 3</text>
+            <text x="90" y="104" class="sv-sub">Observation 1</text>
+            <text x="520" y="114" class="sv-sub">Observation 2</text>
+            <text x="274" y="314" class="sv-sub sv-start">Observation 3</text>
           </svg>
           <div>
             <h4>Triangulation</h4>
-            <p>Trois Maraudeurs, placés en des points éloignés, transmettent chacun la direction où ils ont aperçu la cible. Là où ces directions se croisent se trouve sa position probable.</p>
-            <ul><li>Trois signalements minimum, pris à peu près au même moment.</li><li>Chaque signalement indique le lieu de l'observateur et la direction.</li><li>Le Référent reporte les lignes sur le tableau d'enquête.</li></ul>
+            <p><b>Renseignement · Assassins.</b> Trois Assassins, placés en des points éloignés, relèvent chacun la direction où ils ont aperçu la cible. Là où ces directions se croisent se trouve sa position probable.</p>
+            <ul><li>Trois observations minimum, prises à peu près au même moment.</li><li>Chaque observation indique le lieu de l'Assassin et la direction.</li><li>Le Référent reporte les lignes sur le tableau d'enquête et décide du lieu d'intervention.</li></ul>
           </div>
         </div>
 
         <div class="g-schema">
           <svg viewBox="0 0 600 340" role="img" aria-label="Schéma de filature">
-            <defs><marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#ff1f3d"/></marker></defs>
             <rect x="1" y="1" width="598" height="338" class="sv-bg"/>
-            <path d="M40 260 C140 260 160 120 260 130 S420 250 540 110" class="sv-path" marker-end="url(#ar2)"/>
-            <g class="sv-target"><path d="M540 96 L554 110 L540 124 L526 110 Z"/></g>
-            <path d="M40 290 C120 290 150 170 230 165" class="sv-follow"/>
-            <path d="M300 205 C360 240 420 250 470 190" class="sv-follow f2"/>
-            <g class="sv-agent"><circle cx="230" cy="165" r="15"/><text x="230" y="170">M1</text></g>
-            <g class="sv-agent"><circle cx="470" cy="190" r="15"/><text x="470" y="195">M2</text></g>
-            <g class="sv-assassin"><circle cx="560" cy="45" r="16"/><text x="560" y="50">A</text></g>
-            <line x1="555" y1="62" x2="545" y2="92" class="sv-strike" marker-end="url(#ar2)"/>
+            <path d="M40 260 C140 260 160 120 260 130 S420 250 520 120" class="sv-path" marker-end="url(#ar2)"/>
+            <g class="sv-target"><path d="M530 96 L544 110 L530 124 L516 110 Z"/></g>
+            <path d="M40 290 C120 290 150 170 230 165" class="sv-follow sv-red"/>
+            <path d="M300 205 C360 240 420 250 470 190" class="sv-follow sv-red"/>
+            <g class="sv-assassin"><circle cx="230" cy="165" r="15"/><text x="230" y="170">A1</text></g>
+            <g class="sv-assassin"><circle cx="470" cy="190" r="15"/><text x="470" y="195">A2</text></g>
+            <g class="sv-agent"><circle cx="575" cy="70" r="14"/><text x="575" y="75">M</text></g>
+            <g class="sv-agent"><circle cx="575" cy="150" r="14"/><text x="575" y="155">M</text></g>
+            <g class="sv-agent"><circle cx="500" cy="55" r="14"/><text x="500" y="60">M</text></g>
             <text x="270" y="232" class="sv-sub">Relais</text>
-            <text x="470" y="40" class="sv-sub">Interception</text>
-            <text x="40" y="236" class="sv-sub" text-anchor="start">Trajet de la cible</text>
+            <text x="430" y="40" class="sv-sub">Point d'intervention</text>
+            <text x="40" y="236" class="sv-sub sv-start">Trajet de la cible</text>
           </svg>
           <div>
             <h4>Filature et relais</h4>
-            <p>La cible est suivie à distance, sans jamais être approchée. Pour ne pas être repéré, un Maraudeur passe le relais à un autre en cours de route. L'Assassin attend au point d'interception.</p>
-            <ul><li>Distance constante, jamais dans le champ de vision direct.</li><li>Relais dès que la cible ralentit ou se retourne.</li><li>L'Assassin n'intervient qu'au signal du dernier Maraudeur.</li></ul>
+            <p><b>Renseignement · Assassins.</b> La cible est suivie à distance, sans jamais être approchée. Pour ne pas être repéré, un Assassin passe le relais à un autre. Il guide ensuite l'équipe d'intervention jusqu'au point choisi par le Référent.</p>
+            <ul><li>Distance constante, jamais dans le champ de vision direct.</li><li>Relais dès que la cible ralentit ou se retourne.</li><li>Les Maraudeurs (capture) ou un Assassin (exécution) n'interviennent qu'au signal.</li></ul>
           </div>
         </div>
 
         <div class="g-schema">
-          <svg viewBox="0 0 600 340" role="img" aria-label="Schéma de rabattage">
-            <defs><marker id="ar3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#c9a24a"/></marker></defs>
+          <svg viewBox="0 0 600 340" role="img" aria-label="Schéma de blocage et capture">
             <rect x="1" y="1" width="598" height="338" class="sv-bg"/>
-            <path d="M120 60 A170 170 0 0 0 120 280" class="sv-arc"/>
-            <g class="sv-agent"><circle cx="150" cy="70" r="15"/><text x="150" y="75">M1</text></g>
-            <g class="sv-agent"><circle cx="95" cy="170" r="15"/><text x="95" y="175">M2</text></g>
-            <g class="sv-agent"><circle cx="150" cy="270" r="15"/><text x="150" y="275">M3</text></g>
-            <line x1="172" y1="85" x2="250" y2="140" class="sv-push" marker-end="url(#ar3)"/>
-            <line x1="118" y1="170" x2="235" y2="170" class="sv-push" marker-end="url(#ar3)"/>
-            <line x1="172" y1="255" x2="250" y2="200" class="sv-push" marker-end="url(#ar3)"/>
-            <g class="sv-target"><path d="M290 156 L304 170 L290 184 L276 170 Z"/></g>
-            <path d="M310 170 L430 170" class="sv-path" marker-end="url(#ar2)"/>
-            <path d="M470 110 L470 230" class="sv-wall"/>
-            <g class="sv-assassin"><circle cx="470" cy="170" r="17"/><text x="470" y="175">A</text></g>
-            <g class="sv-assassin a2"><circle cx="540" cy="110" r="13"/><text x="540" y="115">A</text></g>
-            <text x="290" y="210" class="sv-sub">Cible poussée</text>
-            <text x="470" y="258" class="sv-sub">Seule issue</text>
+            <rect x="60" y="40" width="480" height="40" class="sv-block"/>
+            <rect x="60" y="260" width="480" height="40" class="sv-block"/>
+            <text x="300" y="65" class="sv-sub">Bâtiments</text>
+            <text x="300" y="285" class="sv-sub">Bâtiments</text>
+            <path d="M170 80 L170 120 M430 80 L430 120 M300 220 L300 260" class="sv-gap"/>
+            <g class="sv-agent"><circle cx="170" cy="112" r="15"/><text x="170" y="117">M1</text></g>
+            <g class="sv-agent"><circle cx="430" cy="112" r="15"/><text x="430" y="117">M2</text></g>
+            <g class="sv-agent"><circle cx="300" cy="228" r="15"/><text x="300" y="233">M3</text></g>
+            <text x="170" y="145" class="sv-sub">Accès bloqué</text>
+            <text x="430" y="145" class="sv-sub">Accès bloqué</text>
+            <text x="324" y="233" class="sv-sub sv-start">Accès bloqué</text>
+            <g class="sv-agent"><circle cx="90" cy="170" r="15"/><text x="90" y="175">M4</text></g>
+            <line x1="108" y1="170" x2="250" y2="170" class="sv-push" marker-end="url(#ar3)"/>
+            <g class="sv-target"><path d="M300 156 L314 170 L300 184 L286 170 Z"/></g>
+            <path d="M320 170 L470 170" class="sv-path" marker-end="url(#ar2)"/>
+            <g class="sv-agent"><circle cx="510" cy="150" r="15"/><text x="510" y="155">M5</text></g>
+            <g class="sv-agent"><circle cx="510" cy="190" r="15"/><text x="510" y="195">M6</text></g>
+            <circle cx="500" cy="170" r="44" class="sv-zone"/>
+            <text x="500" y="236" class="sv-lbl">Immobilisation</text>
+            <text x="200" y="195" class="sv-sub">Poussée</text>
           </svg>
           <div>
-            <h4>Rabattage</h4>
-            <p>Les Maraudeurs se déploient en arc et avancent ensemble pour pousser la cible vers la seule issue laissée libre. L'Assassin l'attend à cette sortie, éventuellement doublé d'un second en couverture.</p>
-            <ul><li>Adapté aux cibles de dangerosité 3 et plus.</li><li>Les Maraudeurs se montrent volontairement pour orienter la fuite.</li><li>L'issue est choisie à l'avance sur le tableau d'enquête.</li></ul>
+            <h4>Blocage d'accès et capture</h4>
+            <p><b>Traque · Maraudeurs.</b> Les Maraudeurs ferment une à une les issues de la zone. Un Maraudeur pousse la cible vers la seule sortie laissée libre, où l'équipe de capture l'attend pour l'immobiliser.</p>
+            <ul><li>Les accès sont repérés à l'avance sur le tableau d'enquête.</li><li>Un Maraudeur par accès, jamais d'issue laissée sans surveillance.</li><li>Immobilisation à deux minimum, puis capture et escorte.</li></ul>
           </div>
         </div>
 
@@ -606,19 +617,22 @@
             <text x="300" y="270" class="sv-sub">Couvert</text>
             <path d="M40 170 L280 170" class="sv-path" marker-end="url(#ar2)"/>
             <g class="sv-target"><path d="M300 156 L314 170 L300 184 L286 170 Z"/></g>
-            <g class="sv-bait"><circle cx="500" cy="170" r="16"/><text x="500" y="175">M</text></g>
+            <g class="sv-agent"><circle cx="110" cy="110" r="14"/><text x="110" y="115">M</text></g>
+            <g class="sv-agent"><circle cx="110" cy="230" r="14"/><text x="110" y="235">M</text></g>
+            <path d="M110 126 L110 214" class="sv-wall2"/>
+            <text x="110" y="264" class="sv-sub">Retraite coupée</text>
+            <g class="sv-bait"><circle cx="500" cy="170" r="16"/><text x="500" y="175">A</text></g>
             <text x="500" y="205" class="sv-sub">Appât</text>
             <g class="sv-assassin"><circle cx="300" cy="125" r="16"/><text x="300" y="130">A</text></g>
             <g class="sv-assassin"><circle cx="300" cy="215" r="16"/><text x="300" y="220">A</text></g>
             <line x1="300" y1="141" x2="300" y2="152" class="sv-strike" marker-end="url(#ar2)"/>
             <line x1="300" y1="199" x2="300" y2="188" class="sv-strike" marker-end="url(#ar2)"/>
             <circle cx="300" cy="170" r="60" class="sv-zone"/>
-            <text x="120" y="155" class="sv-sub">Trajet attendu</text>
           </svg>
           <div>
             <h4>Embuscade</h4>
-            <p>La cible est attirée vers un point choisi (faux rendez-vous, information volontairement divulguée, Maraudeur servant d'appât). Les Assassins attendent à couvert de part et d'autre et frappent en même temps.</p>
-            <ul><li>Réservé aux cibles dont les habitudes sont connues.</li><li>Le lieu doit offrir du couvert des deux côtés.</li><li>Frappe simultanée, au signal unique.</li></ul>
+            <p><b>Exécution · Assassins, soutien Maraudeurs.</b> La cible est attirée vers un point choisi par le Référent (faux rendez-vous, information volontairement divulguée). Les Maraudeurs coupent sa retraite derrière elle, les Assassins frappent depuis le couvert.</p>
+            <ul><li>Réservé aux cibles dont les habitudes sont connues grâce au renseignement.</li><li>Le lieu doit offrir du couvert des deux côtés.</li><li>Frappe simultanée, au signal unique.</li></ul>
           </div>
         </div>
         <div class="g-legend">
@@ -630,14 +644,15 @@
       <section class="g-sec" id="g-regles">
         <h3><span>VI</span> Règles d'engagement</h3>
         <ol class="g-rules">
-          <li><b>Aucune traque sans ordre.</b> Seul le Haut-Commandement désigne une cible.</li>
-          <li><b>Discrétion absolue.</b> La cible ne doit jamais savoir qu'elle est traquée avant l'intervention.</li>
-          <li><b>Respect de la condition.</b> « Vivant uniquement » signifie vivant. Toute erreur est rapportée au Référent.</li>
+          <li><b>Aucune traque sans ordre.</b> Seuls le Haut-Commandement et les Référents décident de la cible, du moment et du lieu.</li>
+          <li><b>Chacun son rôle.</b> Le renseignement et l'exécution reviennent aux Assassins. Le blocage, l'immobilisation et la capture reviennent aux Maraudeurs.</li>
+          <li><b>Discrétion absolue.</b> La cible ne doit jamais savoir qu'elle est observée avant l'intervention.</li>
+          <li><b>Respect de la condition.</b> « Vivant uniquement » signifie capture par les Maraudeurs. « Mort » signifie exécution par un Assassin. Toute erreur est rapportée au Référent.</li>
           <li><b>Jamais seul face au rang supérieur.</b> Une cible T4, T5 ou à pouvoir unique ne s'engage jamais en solitaire.</li>
-          <li><b>Tout passe par le registre.</b> Signalements, photos et pièces sont consignés dans le dossier et sur le tableau d'enquête.</li>
+          <li><b>Tout passe par le registre.</b> Observations, photos et pièces sont consignées dans le dossier et sur le tableau d'enquête.</li>
           <li><b>Récupération de l'équipement unique.</b> Lame, double lame, cristal ou arme unique sont remis au Haut-Commandement.</li>
           <li><b>Preuve de clôture.</b> Une traque n'est clôturée qu'avec une preuve et un rapport.</li>
-          <li><b>Abandon déclaré.</b> Un Assassin qui ne peut poursuivre remet la traque en circulation dans le registre.</li>
+          <li><b>Abandon déclaré.</b> Un agent qui ne peut poursuivre remet la traque en circulation dans le registre.</li>
         </ol>
       </section>
     </div>
@@ -695,15 +710,15 @@ const CONFIG = {
   root: { pseudo: "VL-3009", code: "Vhaelor", role: "referent" },
   roles: {
     referent:  { label: "Référent Traque", desc: "Crée, modifie et supprime les traques, gère les accès" },
-    assassin:  { label: "Assassin",        desc: "Prend en charge et clôture les traques" },
-    maraudeur: { label: "Maraudeur",       desc: "Consulte et transmet des signalements" }
+    assassin:  { label: "Assassin",        desc: "Renseignement et exécution des cibles" },
+    maraudeur: { label: "Maraudeur",       desc: "Blocage d'accès, immobilisation et capture" }
   }
 };
 
 const PERMS = {
   referent:  { create: true,  edit: true,  delete: true,  claim: true,  close: true,  report: true,  backup: true },
   assassin:  { create: false, edit: false, delete: false, claim: true,  close: true,  report: true,  backup: false },
-  maraudeur: { create: false, edit: false, delete: false, claim: false, close: false, report: true,  backup: false }
+  maraudeur: { create: false, edit: false, delete: false, claim: true,  close: true,  report: true,  backup: false }
 };
 
 const DANGER = [
@@ -1132,7 +1147,7 @@ function openForm(id) {
         <div class="field"><label class="f">Statut</label>
           <select name="statut">${Object.entries(STATUS).map(([k, v]) => `<option value="${k}" ${t.statut === k ? "selected" : ""}>${v}</option>`).join("")}</select>
         </div>
-        <div class="field"><label class="f">Assignée à</label><input type="text" name="assigne" maxlength="60" value="${esc(t.assigne)}" placeholder="Matricule de l'Assassin"></div>
+        <div class="field"><label class="f">Assignée à</label><input type="text" name="assigne" maxlength="60" value="${esc(t.assigne)}" placeholder="Matricule de l'agent"></div>
         <div class="field"><label class="f">Priorité</label>
           <select name="priorite">${["Normale","Haute","Absolue"].map(p => `<option ${t.priorite === p ? "selected" : ""}>${p}</option>`).join("")}</select>
         </div>
@@ -1205,7 +1220,11 @@ function openDetail(id) {
   let actions = `<button class="btn primary" id="aBoard" style="margin-right:auto">Tableau d'enquête</button>`;
   if (can("claim") && t.statut === "active") actions += `<button class="btn" id="aClaim">Prendre la traque</button>`;
   if (can("claim") && t.statut === "cours" && mine) actions += `<button class="btn ghost" id="aDrop">Abandonner</button>`;
-  if (can("close") && open && (session.role === "referent" || mine)) actions += `<button class="btn" id="aCapt">Capturée</button><button class="btn" id="aElim">Éliminée</button>`;
+  // Capture = Maraudeurs, exécution = Assassins, le Référent peut tout clôturer
+  if (can("close") && open && (session.role === "referent" || mine)) {
+    if (session.role !== "assassin")  actions += `<button class="btn" id="aCapt">Capturée</button>`;
+    if (session.role !== "maraudeur") actions += `<button class="btn" id="aElim">Éliminée</button>`;
+  }
   if (can("edit")) actions += `<button class="btn" id="aEdit">Modifier</button>`;
   if (can("delete")) actions += `<button class="btn danger" id="aDel">Supprimer</button>`;
 
